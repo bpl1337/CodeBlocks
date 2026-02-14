@@ -1,52 +1,75 @@
+/* ГЛОБАЛЬНЫЙ СБРОС  */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin: 0;           /* убирает внешние отступы у всех элементов */
+    padding: 0;          /* убирает внутренние отступы у всех элементов */
+    box-sizing: border-box; /* padding не увеличивает общую ширину элемента */
 }
 
+/*  СТИЛИ ТЕЛА СТРАНИЦЫ  */
 body {
-    background: #16213E;  
+    background: #16213E;  /* цвет фона всей страницы */
 }
 
+/*  НАВИГАЦИЯ  */
 .navbar {
-    display: flex;           
-    align-items: center;
-    padding-left: 80px;      
-    width: 100%;
-    height: 80px;
-    background: rgba(10, 10, 26, 0.9);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(76, 201, 240, 0.3);
+    display: flex;           /* дети встают в ряд */
+    align-items: center;     /* выравнивание детей по вертикали по центру */
+    padding-left: 30px;      /* внутренний отступ слева 30px */
+    width: 100%;             /* ширина на всю ширину экрана */
+    height: 80px;            /* фиксированная высота 80px */
+    background: rgba(10, 10, 26, 0.9); /* темно-синий фон с прозрачностью 90% */
+    backdrop-filter: blur(10px); /* размытие фона за навигацией (эффект стекла) */
+    border-bottom: 1px solid rgba(76, 201, 240, 0.3); /* синяя линия снизу с прозрачностью 30% */
 }
 
-.navbar .logoname {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+/*  ЛОГОТИП  */
+.navbar .logo-name {
+    font-family: 'Inter';        /* шрифт Inter */
+    font-weight: 700;            /* жирность 700 (Bold) */
+    font-size: 30px;             /* размер шрифта 30px */
+    background: linear-gradient(135deg, #4CC9F0 0%, #2C748A 100%); /* градиент от голубого к темно-синему */
+    -webkit-text-fill-color: transparent; /* делает текст прозрачным (для Safari) */
+    background-clip: text;        /* обрезает градиент по форме текста */
 }
 
-.navbar .logoname span {
-    font-family: 'Inter';
-    font-weight: 700;
-    font-size: 24px;
-    background: linear-gradient(90deg, #4CC9F0 0%, #2C748A 100%);
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-    text-fill-color: transparent;
+/*  ВСЕ ССЫЛКИ НА САЙТЕ  */
+a {
+    text-decoration: none;  /* убирает подчеркивание у всех ссылок */
 }
 
-.navbar .logoname svg {
-    width: 32px;
-    height: 32px;
-    fill: #2C748A;  
-    background: linear-gradient(136.55deg, #4CC9F0 10.18%, #2C748A 96.96%);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
+/*  КОНТЕЙНЕР СО ССЫЛКАМИ И КНОПКОЙ  */
+.navbar .nav-links {
+    margin-left: auto;   /* занимает всё свободное место слева — прижимает блок вправо */
+    margin-right: 50px;  /* внешний отступ справа 50px */
+    display: flex;       /* дети (ссылки и кнопка) встают в ряд */
+    align-items: center;  /* выравнивает всех детей по центру */
+    gap: 30px;           /* расстояние между детьми 30px */
 }
 
+/*  СТИЛИ ССЫЛОК  */
+.navbar .nav-links .nav-lk {
+    font-family: 'Inter';        /* шрифт Inter */
+    font-style: normal;          /* обычный стиль (не курсив) */
+    font-weight: 500;            /* жирность 500 (Medium) */
+    font-size: 16px;             /* размер шрифта 16px */
+    color: #B0B0C0;            /* цвет текста — серый */
+}
 
+/*  СТИЛИ КНОПКИ  */
+.navbar .nav-links .nav-btn {
+    width: 100px;                 /* ширина кнопки 100px */
+    height: 40px;                 /* высота кнопки 40px */
+    border: none;                 /* убирает стандартную рамку */
+    background: linear-gradient(135deg, #3CBFF3 1.55%, #1A49B5 108.67%); /* градиентный фон кнопки */
+    border-radius: 8px;           /* скругление углов 8px */
+    cursor: pointer;              /* ← кликабильность */
 
+    font-family: 'Inter';         /* шрифт Inter */
+    font-style: normal;           /* обычный стиль (не курсив) */
+    font-weight: 700;             /* жирность 700  */
+    font-size: 16px;              /* размер шрифта 16px */
+    color: #FFFFFF;             /* цвет текста */
+}
 
 
 
