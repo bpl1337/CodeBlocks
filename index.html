@@ -30,6 +30,7 @@
         операторы. Демо-сортировка пузырьком покажет работу циклов и условий.
         Без регистрации, просто откройте и программируйте.
       </p>
+      <button class="start" id="startBtn">Начать программировать</button>
     </section>
     <main class="editor">
       <p class="text-main-H">🧱 Редактор CodeBlocks</p>
@@ -37,13 +38,38 @@
       <button class="editor-btn-clear" id="clearBtn">🗑 Очистить</button>
       <div class="background-editor">
         <div class="nav">
-          <p class="blocks">📚 Библиотека блоков</p>
-          <p class="works">⚙️ Рабочая область</p>
-          <p class="console">📟 Консоль</p>
+          <p class="name-block">📚 Библиотека блоков</p>
+          <p class="name-work">⚙️ Рабочая область</p>
+          <p class="name-console">📟 Консоль</p>
         </div>
-        <div class="blocks"></div>
+        <div class="blocks">
+          <p class="state-1">📦 ПЕРЕМЕННЫЕ</p>
+          <div class="variables" draggable="true">Объявить переменную(ые)</div>
+          <div class="variables" draggable="true">Присвоить значение</div>
+          <p class="state-1">➕ АРИФМЕТИКА</p>
+          <div class="arithmetic" draggable="true">
+            Арифметическое выражение
+          </div>
+          <div class="arithmetic" draggable="true">Присвоить значение</div>
+          <p class="state-1">⚡ УСЛОВИЯ</p>
+          <div class="conditions" draggable="true">Если (if)</div>
+          <div class="conditions" draggable="true">Если-иначе (if-else)</div>
+          <div class="conditions" draggable="true">Логическое выражение</div>
+          <p class="state-1">📊 МАССИВЫ</p>
+          <div class="array" draggable="true">Объявить массив</div>
+          <div class="array" draggable="true">Элемент массива =</div>
+          <div class="array" draggable="true">Получить элемент</div>
+          <p class="state-1">🔄 ЦИКЛЫ</p>
+          <div class="cycle" draggable="true">Цикл While</div>
+          <div class="cycle" draggable="true">Цикл For(C++ style)</div>
+          <p class="state-1">📟 ВЫВОД</p>
+          <div class="print" draggable="true">Вывести в консоль</div>
+          <div class="step"></div>
+        </div>
         <div class="work-pos"></div>
-        <div class="background-console"></div>
+        <div class="background-console">
+          
+        </div>
       </div>
     </main>
     <footer class="footer">

@@ -69,6 +69,10 @@ a {
 
 .hero {
     padding: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .hero .text-main-H {
@@ -87,7 +91,7 @@ a {
 }
 
 .hero h2 {
-    margin-bottom: 40px;
+    margin-bottom: 80px;
 }
 
 .hero .text-main-h {
@@ -105,10 +109,28 @@ a {
     color: rgba(176, 176, 192, 0.6);
 }
 
+.hero .start{
+    width: 283px;
+    height: 47px;
+    border: none;                     
+    cursor: pointer;
+
+    background: linear-gradient(90deg, #00B4D8 0%, #0077B6 100%);
+    border-radius: 8px;
+    margin-top: 200px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
 .editor {
     width: 100%;
     height: 865px;
-    margin-top: 250px;
+    margin-top: 40px;
     background: #0a0a1a91;
 }
 
@@ -121,7 +143,7 @@ a {
     top: 50px;
     
     background: #0F0F1F;
-    border: 1px solid rgba(76, 201, 240, 0.2);
+    border: 1px solid rgba(76, 201, 240, 0.3);
     border-radius: 16px;
 }
 
@@ -159,7 +181,7 @@ a {
     text-align: center;
     color: #FFFFFF;
 
-    left: 1080px;
+    left: 1100px;
     top: 30px;
 }
 
@@ -186,27 +208,42 @@ a {
 }
 
 .editor .background-editor .nav {
+    display: flex;
+    align-items: center;
     position: absolute;
     width: 1438px;
     height: 79px;
     
     background: rgba(10, 10, 26, 0.8);
-    border-bottom: 1px solid rgba(76, 201, 240, 0.2);
+    border-bottom: 1px solid rgba(76, 201, 240, 0.3);
     border-radius: 16px 15px 0 0;
 }
 
-.editor .background-editor .nav .blocks {
-    position: absolute;
+.editor .background-editor .nav .name-block {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 700;
     font-size: 18px;
     text-align: center;
     color: #4CC9F0;
+
+    margin-left: 15px;
 }
 
-.editor .background-editor .nav .works {
-    position: absolute;
+.editor .background-editor .nav .name-work {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+    color: #4CC9F0;
+
+    margin-right: 640px;
+    margin-left: 115px;
+                       
+}
+
+.editor .background-editor .nav .name-console {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 700;
@@ -217,53 +254,189 @@ a {
     right: 100px;
 }
 
-.editor .background-editor .nav .console {
-    position: absolute;
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    text-align: center;
-    color: #4CC9F0;
-
-    right: 1000px;
-}
-
 .editor .background-editor .blocks {
     position: absolute;
     width: 301px;
-    height: 699px;
+    height: 620px;
     
+    height: 620px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-color: rgba(22, 33, 62, 0.0) rgba(22, 33, 62, 0);
+
     background: rgba(22, 33, 62, 0.1);
-    border-right: 1px solid rgba(76, 201, 240, 0.2);
+    border-right: 1px solid rgba(76, 201, 240, 0.3);
     border-radius: 16px 0 0 16px;
+    margin-top: 79px;
+}
+
+.editor .background-editor .blocks .state-1 {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    color: #B0B0C0;
+
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.editor .background-editor .blocks .variables {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 267px;
+    height: 67px;
+
+    background: linear-gradient(135deg, #4CC9F0, #3A86FF);
+    backdrop-filter: blur(7px);
+    border-radius: 8px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #FFFFFF;
+
+    margin-left: 20px;
+    margin-top: 15px;
+}
+
+.editor .background-editor .blocks .arithmetic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 267px;
+    height: 67px;
+
+    background: linear-gradient(135deg, #9C89B8, #7B6C9C);
+    backdrop-filter: blur(7px);
+    border-radius: 8px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #FFFFFF;
+
+    margin-left: 20px;
+    margin-top: 15px;
+}
+
+.editor .background-editor .blocks .conditions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 267px;
+    height: 67px;
+
+    background: linear-gradient(135deg, #F72585, #B5179E);
+    backdrop-filter: blur(7px);
+    border-radius: 8px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #FFFFFF;
+
+    margin-left: 20px;
+    margin-top: 15px;
+}
+
+.editor .background-editor .blocks .array {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 267px;
+    height: 67px;
+
+    background: linear-gradient(135deg, #F9C74F, #F9844A);
+    backdrop-filter: blur(7px);
+    border-radius: 8px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #000000;
+
+    margin-left: 20px;
+    margin-top: 15px;
+}
+
+.editor .background-editor .blocks .cycle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 267px;
+    height: 67px;
+
+    background: linear-gradient(135deg, #4361EE, #3A0CA3);
+    backdrop-filter: blur(7px);
+    border-radius: 8px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #ffffff;
+
+    margin-left: 20px;
+    margin-top: 15px;
+}
+
+.editor .background-editor .blocks .print {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 267px;
+    height: 67px;
+
+    background: linear-gradient(135deg, #43AA8B, #2D6A4F);
+    backdrop-filter: blur(7px);
+    border-radius: 8px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #ffffff;
+
+    margin-left: 20px;
+    margin-top: 15px;
+}
+
+.editor .background-editor .blocks .step {
+    margin-top: 15px;
 }
 
 .editor .background-editor .work-pos {
-    position: absolute;
+    position: absolute; 
+    display: flex;
     width: 800px;
     height: 619px;
     top: 79px;
     left: 301px;
-    
     background: #0A0A1A;
 }
 
 .editor .background-editor .background-console {
     position: absolute;
     width: 337px;
-    height: 699px;
+    height: 620px;
     right: 0px;
+    top: 79px; 
     
     background: rgba(22, 33, 62, 0.1);
-    border-left: 1px solid rgba(76, 201, 240, 0.2);
+    border-left: 1px solid rgba(76, 201, 240, 0.3);
     border-radius: 0 16px 16px 0;
 }
 
 .footer {
     width: 100%;
     height: 200px;
-    margin-top: 125px;
+    margin-top: 70px;
     background: #0A0A1A;
     border: 1px solid rgba(76, 201, 240, 0.2);
 }
@@ -277,7 +450,7 @@ a {
     font-weight: 700;
     font-size: 24px;
 
-    padding-left: 100px;
+    padding-left: 65px;
     padding-top: 40px;
 
     color: #4CC9F0;
@@ -291,7 +464,7 @@ a {
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
-    padding-left: 100px;
+    padding-left: 65px;
     padding-top: 50px;
     text-align: left;
 
@@ -306,7 +479,7 @@ a {
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
-    padding-left: 100px;
+    padding-left: 65px;
     padding-top: 60px;
     
     color: #666666;
