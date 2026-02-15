@@ -1,112 +1,124 @@
+/* ГЛОБАЛЬНЫЙ СБРОС */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin: 0;                      /* убирает внешние отступы у всех элементов */
+    padding: 0;                     /* убирает внутренние отступы у всех элементов */
+    box-sizing: border-box;          /* padding не увеличивает общую ширину элемента */
 }
 
+/* СТИЛИ ТЕЛА СТРАНИЦЫ */
 body {
-    background: #16213E;
+    background: #16213E;             /* цвет фона всей страницы */
 }
 
+/* НАВИГАЦИЯ */
 .navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    position: sticky;                /* прилипает при скролле */
+    top: 0;                          /* прилипает к верхней границе */
+    z-index: 1000;                   /* чтобы быть поверх всего */
 
-    display: flex;
-    align-items: center;
-    padding-left: 30px;
-    width: 100%;
-    height: 80px;
-    background: rgba(10, 10, 26, 0.6);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(76, 201, 240, 0.2);
+    display: flex;                   /* дети встают в ряд */
+    align-items: center;             /* выравнивание детей по вертикали по центру */
+    padding-left: 30px;              /* внутренний отступ слева 30px */
+    width: 100%;                     /* ширина на всю ширину экрана */
+    height: 80px;                    /* фиксированная высота 80px */
+    background: rgba(10, 10, 26, 0.6); /* темно-синий фон с прозрачностью 60% */
+    backdrop-filter: blur(10px);      /* размытие фона за навигацией (эффект стекла) */
+    border-bottom: 1px solid rgba(76, 201, 240, 0.2); /* синяя линия снизу с прозрачностью 20% */
 }
 
+/* ЛОГОТИП */
 .navbar .logo-name {
-    font-family: 'Inter';
-    font-weight: 700;
-    font-size: 30px;
-    background: linear-gradient(135deg, #4CC9F0 0%, #2C748A 100%);
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-family: 'Inter';            /* шрифт Inter */
+    font-weight: 700;                /* жирность 700 (Bold) */
+    font-size: 30px;                 /* размер шрифта 30px */
+    background: linear-gradient(135deg, #4CC9F0 0%, #2C748A 100%); /* градиент от голубого к темно-синему */
+    -webkit-text-fill-color: transparent; /* делает текст прозрачным */
+    background-clip: text;            /* обрезает градиент по форме текста */
 }
 
+/* ВСЕ ССЫЛКИ НА САЙТЕ */
 a {
-    text-decoration: none;
+    text-decoration: none;            /* убирает подчеркивание у всех ссылок */
 }
 
+/* КОНТЕЙНЕР СО ССЫЛКАМИ И КНОПКОЙ */
 .navbar .nav-links {
-    margin-left: auto;
-    margin-right: 50px;
-    display: flex;
-    align-items: center;
-    gap: 30px;
+    margin-left: auto;                /* занимает всё свободное место слева — прижимает блок вправо */
+    margin-right: 50px;               /* внешний отступ справа 50px */
+    display: flex;                    /* дети (ссылки и кнопка) встают в ряд */
+    align-items: center;              /* выравнивает всех детей по центру */
+    gap: 30px;                        /* расстояние между детьми 30px */
 }
 
+/* СТИЛИ ССЫЛОК */
 .navbar .nav-links .nav-lk {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    color: #B0B0C0;
+    font-family: 'Inter';            /* шрифт Inter */
+    font-style: normal;               /* обычный стиль (не курсив) */
+    font-weight: 500;                 /* жирность 500 (Medium) */
+    font-size: 16px;                  /* размер шрифта 16px */
+    color: #B0B0C0;                   /* цвет текста — серый */
 }
 
+/* СТИЛИ КНОПКИ */
 .navbar .nav-links .nav-btn {
-    width: 100px;
-    height: 40px;
-    border: none;
-    background: linear-gradient(135deg, #3CBFF3 1.55%, #1A49B5 108.67%);
-    border-radius: 8px;
-    cursor: pointer;
+    width: 100px;                      /* ширина кнопки 100px */
+    height: 40px;                      /* высота кнопки 40px */
+    border: none;                      /* убирает стандартную рамку */
+    background: linear-gradient(135deg, #3CBFF3 1.55%, #1A49B5 108.67%); /* градиентный фон кнопки */
+    border-radius: 8px;                /* скругление углов 8px */
+    cursor: pointer;                   /* курсор-рука при наведении (кликабельность) */
 
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    color: #FFFFFF;
+    font-family: 'Inter';              /* шрифт Inter */
+    font-style: normal;                /* обычный стиль (не курсив) */
+    font-weight: 700;                  /* жирность 700 (Bold) */
+    font-size: 16px;                   /* размер шрифта 16px */
+    color: #FFFFFF;                    /* цвет текста — белый */
 }
 
+/* ГЕРОЙ-СЕКЦИЯ */
 .hero {
-    padding: 90px;
+    padding: 90px;                     /* внутренние отступы со всех сторон 90px */
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: center;           /* по центру по вертикали */
+    align-items: center;               /* по центру по горизонтали */
 }
 
+/* ГЛАВНЫЙ ЗАГОЛОВОК */
 .hero .text-main-H {
-    width: 100%;
-    height: 100px;
+    width: 100%;                       /* ширина на всю ширину родителя */
+    height: 100px;                     /* фиксированная высота 100px */
     
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 80px;
-    text-align: center;
+    font-family: 'Inter';              /* шрифт Inter */
+    font-style: normal;                /* обычный стиль (не курсив) */
+    font-weight: 700;                  /* жирность 700 (Bold) */
+    font-size: 80px;                   /* размер шрифта 80px */
+    text-align: center;                /* выравнивание текста по центру */
     
-    background: linear-gradient(135deg, #4CC9F0 1.78%, #F72585 98.22%);
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: linear-gradient(135deg, #4CC9F0 1.78%, #F72585 98.22%); /* градиент от голубого к розовому */
+    -webkit-text-fill-color: transparent; /* делает текст прозрачным */
+    background-clip: text;             /* обрезает градиент по форме текста */
 }
 
+/* ОТСТУП ПОСЛЕ ЗАГОЛОВКА */
 .hero h2 {
-    margin-bottom: 80px;
+    margin-bottom: 80px;               /* внешний отступ снизу 80px */
 }
 
+/* ПОДЗАГОЛОВОК / ОСНОВНОЙ ТЕКСТ */
 .hero .text-main-h {
-    width: 100%;
-    height: 40px;
+    width: 100%;                       /* ширина на всю ширину родителя */
+    height: 40px;                      /* фиксированная высота 40px */
     
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    text-align: center;
-    max-width: 1000px;
-    margin: 0 auto;
+    font-family: 'Inter';              /* шрифт Inter */
+    font-style: normal;                /* обычный стиль (не курсив) */
+    font-weight: 400;                  /* жирность 400 (Normal) */
+    font-size: 24px;                   /* размер шрифта 24px */
+    text-align: center;                /* выравнивание текста по центру */
+    max-width: 1000px;                 /* максимальная ширина 1000px (текст не будет шире) */
+    margin: 0 auto;                    /* центрирует блок по горизонтали */
 
-    color: rgba(176, 176, 192, 0.6);
+    color: rgba(176, 176, 192, 0.6);   /* серый цвет с прозрачностью 60% */
 }
 
 .hero .start{
@@ -127,146 +139,155 @@ a {
     color: #FFFFFF;
 }
 
+/* РЕДАКТОР */
 .editor {
-    width: 100%;
-    height: 865px;
-    margin-top: 40px;
-    background: #0a0a1a91;
+    width: 100%;                       /* ширина на всю ширину экрана */
+    height: 865px;                     /* фиксированная высота 865px */
+    margin-top: 40px;                  /* внешний отступ сверху 40px */
+    background: #0a0a1a91;             /* темно-синий фон с прозрачностью ~57% (91 в hex) */
 }
 
+/* ФОН РЕДАКТОРА */
 .editor .background-editor {
-    position: relative;
-    width: 1440px;
-    height: 700px;
-    margin-left: auto;
-    margin-right: auto;
-    top: 50px;
+    position: relative;                /* позиционирование относительно родителя */
+    width: 1440px;                     /* фиксированная ширина 1440px */
+    height: 700px;                     /* фиксированная высота 700px */
+    margin-left: auto;                 /* автоматический отступ слева (центрирование) */
+    margin-right: auto;                /* автоматический отступ справа (центрирование) */
+    top: 50px;                         /* смещение вниз на 50px */
     
-    background: #0F0F1F;
-    border: 1px solid rgba(76, 201, 240, 0.3);
-    border-radius: 16px;
+    background: #0F0F1F;               /* цвет фона — темно-серый */
+    border: 1px solid rgba(76, 201, 240, 0.3); /* синяя рамка с прозрачностью 30% */
+    border-radius: 16px;               /* скругление углов 16px */
 }
 
+/* ЗАГОЛОВОК В РЕДАКТОРЕ */
 .editor .text-main-H {
-    position: relative;
-    width: 399px;
-    height: 40px;
+    position: relative;                /* позиционирование относительно родителя */
+    width: 399px;                      /* ширина блока 399px */
+    height: 40px;                      /* высота блока 40px */
     
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 30px;
+    font-family: 'Inter';              /* шрифт Inter */
+    font-style: normal;                /* обычный стиль */
+    font-weight: 700;                  /* жирность 700 (Bold) */
+    font-size: 30px;                   /* размер шрифта 30px */
 
-    top: 35px;
-    left: 45px;
+    top: 35px;                         /* смещение вниз на 35px */
+    left: 45px;                        /* смещение вправо на 45px */
     
-    color: #4CC9F0;
+    color: #4CC9F0;                    /* цвет текста — голубой */
 }
 
+/* КНОПКА ВЫПОЛНИТЬ В РЕДАКТОРЕ */
 .editor .editor-btn-on {
-    position: relative;
-    width: 164px;
-    height: 43px;
+    position: relative;                /* позиционирование относительно родителя */
+    width: 164px;                      /* ширина кнопки 164px */
+    height: 43px;                      /* высота кнопки 43px */
 
-    border: none;
-    cursor: pointer;
+    border: none;                      /* убирает стандартную рамку */
+    cursor: pointer;                   /* курсор-рука при наведении */
     
-    background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);
-    border-radius: 8px;
+    background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%); /* градиент от бирюзового к синему */
+    border-radius: 8px;                /* скругление углов 8px */
 
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    text-align: center;
-    color: #FFFFFF;
+    font-family: 'Inter';              /* шрифт Inter */
+    font-style: normal;                /* обычный стиль */
+    font-weight: 700;                  /* жирность 700 (Bold) */
+    font-size: 16px;                   /* размер шрифта 16px */
+    text-align: center;                /* выравнивание текста по центру */
+    color: #FFFFFF;                    /* цвет текста — белый */
 
-    left: 1100px;
-    top: 30px;
+    left: 1100px;                      /* смещение вправо на 1100px */
+    top: 30px;                          /* смещение вниз на 30px */
 }
 
+/* КНОПКА ОЧИСТИТЬ В РЕДАКТОРЕ */
 .editor .editor-btn-clear {
-    position: relative;
-    width: 164px;
-    height: 43px;
+    position: relative;                /* позиционирование относительно родителя */
+    width: 164px;                      /* ширина кнопки 164px */
+    height: 43px;                      /* высота кнопки 43px */
 
-    border: none;
-    cursor: pointer;
+    border: none;                      /* убирает стандартную рамку */
+    cursor: pointer;                   /* курсор-рука при наведении */
     
-    background: linear-gradient(135deg, #F72585 0.48%, #D90429 99.52%);
-    border-radius: 8px;
+    background: linear-gradient(135deg, #F72585 0.48%, #D90429 99.52%); /* градиент от розового к красному */
+    border-radius: 8px;                /* скругление углов 8px */
 
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    text-align: center;
-    color: #FFFFFF;
+    font-family: 'Inter';              /* шрифт Inter */
+    font-style: normal;                /* обычный стиль */
+    font-weight: 700;                  /* жирность 700 (Bold) */
+    font-size: 16px;                   /* размер шрифта 16px */
+    text-align: center;                /* выравнивание текста по центру */
+    color: #FFFFFF;                    /* цвет текста — белый */
 
-    left: 1158px;
-    top: 30px;
+    left: 1158px;                       /* смещение вправо на 1158px */
+    top: 30px;                          /* смещение вниз на 30px */
 }
 
+/* ВЕРХНЯЯ ПАНЕЛЬ НАВИГАЦИИ В РЕДАКТОРЕ */
 .editor .background-editor .nav {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    width: 1438px;
-    height: 79px;
+    display: flex;                   /* дети встают в ряд */
+    align-items: center;             /* выравнивание детей по вертикали по центру */
+    position: absolute;                /* абсолютное позиционирование */
+    width: 1438px;                     /* ширина панели 1438px */
+    height: 79px;                      /* высота панели 79px */
     
-    background: rgba(10, 10, 26, 0.8);
-    border-bottom: 1px solid rgba(76, 201, 240, 0.3);
-    border-radius: 16px 15px 0 0;
+    background: rgba(10, 10, 26, 0.8); /* темно-синий фон с прозрачностью 80% */
+    border-bottom: 1px solid rgba(76, 201, 240, 0.3); /* синяя линия снизу с прозрачностью 30% */
+    border-radius: 16px 15px 0 0;      /* скругление: верхние углы 16px и 15px, нижние 0 */
 }
 
+/* ТЕКСТ "БЛОКИ" В НАВИГАЦИИ РЕДАКТОРА */
 .editor .background-editor .nav .name-block {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    text-align: center;
-    color: #4CC9F0;
+    font-family: 'Inter';              /* шрифт Inter */
+    font-style: normal;                /* обычный стиль */
+    font-weight: 700;                  /* жирность 700 (Bold) */
+    font-size: 18px;                   /* размер шрифта 18px */
+    text-align: center;                /* выравнивание текста по центру */
+    color: #4CC9F0;                    /* цвет текста — голубой */
 
     margin-left: 15px;
 }
 
+/* ТЕКСТ "РАБОЧАЯ ОБЛАСТЬ" В НАВИГАЦИИ РЕДАКТОРА */
 .editor .background-editor .nav .name-work {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    text-align: center;
-    color: #4CC9F0;
+    font-family: 'Inter';              /* шрифт Inter */
+    font-style: normal;                /* обычный стиль */
+    font-weight: 700;                  /* жирность 700 (Bold) */
+    font-size: 18px;                   /* размер шрифта 18px */
+    text-align: center;                /* выравнивание текста по центру */
+    color: #4CC9F0;                    /* цвет текста — голубой */
 
     margin-right: 640px;
     margin-left: 115px;
                        
 }
 
+/* ТЕКСТ "КОНСОЛЬ" В НАВИГАЦИИ РЕДАКТОРА */
 .editor .background-editor .nav .name-console {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    text-align: center;
-    color: #4CC9F0;
+    font-family: 'Inter';              /* шрифт Inter */
+    font-style: normal;                /* обычный стиль */
+    font-weight: 700;                  /* жирность 700 (Bold) */
+    font-size: 18px;                   /* размер шрифта 18px */
+    text-align: center;                /* выравнивание текста по центру */
+    color: #4CC9F0;                    /* цвет текста — голубой */
 
-    right: 100px;
+    right: 100px;                      /* отступ справа 100px */
 }
 
+/* ЛЕВАЯ ПАНЕЛЬ С БЛОКАМИ */
 .editor .background-editor .blocks {
-    position: absolute;
-    width: 301px;
-    height: 620px;
+    position: absolute;                /* абсолютное позиционирование */
+    width: 301px;                      /* ширина панели 301px */
+    height: 620px;                     /* высота панели 620px */
     
-    height: 620px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-color: rgba(22, 33, 62, 0.0) rgba(22, 33, 62, 0);
+    overflow-y: auto;                  /* включает вертикальный скролл */
+    overflow-x: hidden;                 /* отключает горизонтальный скролл */
+    scrollbar-color: rgba(22, 33, 62, 0.0) rgba(22, 33, 62, 0); /* цвет скролла прозрачный */
 
-    background: rgba(22, 33, 62, 0.1);
-    border-right: 1px solid rgba(76, 201, 240, 0.3);
-    border-radius: 16px 0 0 16px;
+    background: rgba(22, 33, 62, 0.1); /* темно-синий фон с прозрачностью 10% */
+    border-right: 1px solid rgba(76, 201, 240, 0.3); /* синяя линия справа с прозрачностью 30% */
+    border-radius: 16px 0 0 16px;      /* скругление: левые углы 16px, правые 0 */
     margin-top: 79px;
 }
 
@@ -411,6 +432,7 @@ a {
     margin-top: 15px;
 }
 
+/* РАБОЧАЯ ОБЛАСТЬ */
 .editor .background-editor .work-pos {
     position: absolute; 
     display: flex;
@@ -421,66 +443,122 @@ a {
     background: #0A0A1A;
 }
 
-.editor .background-editor .background-console {
+.editor .background-editor .work-pos .title-L {
     position: absolute;
-    width: 337px;
-    height: 620px;
-    right: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+    width: 624px;
+    height: 64px;
+    right: 90px;
+    top: 30px;
+    
+    background: rgba(22, 33, 62, 0.8);
+    border: 1px solid rgba(76, 201, 240, 0.3);
+    backdrop-filter: blur(7.5px);
+    border-radius: 12px;
+    
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    
+    color: #FFFFFF;
+}
+
+/* ПРАВАЯ ПАНЕЛЬ (КОНСОЛЬ) */
+.editor .background-editor .background-console {
+    position: absolute;                /* абсолютное позиционирование */
+    width: 337px;                      /* ширина панели 337px */
+    height: 620px;                     /* высота панели 620px */
+    right: 0px;                        /* прижато к правому краю */
     top: 79px; 
     
-    background: rgba(22, 33, 62, 0.1);
-    border-left: 1px solid rgba(76, 201, 240, 0.3);
-    border-radius: 0 16px 16px 0;
+    background: rgba(22, 33, 62, 0.1); /* темно-синий фон с прозрачностью 10% */
+    border-left: 1px solid rgba(76, 201, 240, 0.3); /* синяя линия слева с прозрачностью 30% */
+    border-radius: 0 16px 16px 0;      /* скругление: правые углы 16px, левые 0 */
 }
 
-.footer {
-    width: 100%;
-    height: 200px;
-    margin-top: 70px;
+.editor .background-editor .background-console .interpreter-console {
+    position: absolute;
+    width: 278px;
+    height: 388px;
+
+    right: 30px;
+    top: 30px;
+
     background: #0A0A1A;
-    border: 1px solid rgba(76, 201, 240, 0.2);
+    border: 1px solid rgba(0, 255, 157, 0.15);
+    border-radius: 12px;
 }
 
+.editor .background-editor .background-console .for-variables {
+    position: absolute;
+    width: 278px;
+    height: 156px;
+
+    top: 448px;
+    right: 30px;
+
+    background: #0A0A1A;
+    border: 1px solid rgba(0, 255, 157, 0.15);
+    border-radius: 12px;
+}
+
+/* ФУТЕР */
+.footer {
+    width: 100%;                       /* ширина на всю ширину экрана */
+    height: 200px;                     /* фиксированная высота 200px */
+    margin-top: 70px;                  /* внешний отступ сверху 70px */
+    background: #0A0A1A;               /* темно-синий фон */
+    border: 1px solid rgba(76, 201, 240, 0.2); /* синяя рамка с прозрачностью 20% */
+}
+
+/* ТЕКСТ В ФУТЕРЕ (ОСНОВНОЙ) */
 .footer .text-footer-H {
-    width: 100px;
-    height: 40px;
+    width: 100px;                      /* ширина блока 100px */
+    height: 40px;                      /* высота блока 40px */
 
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
+    font-family: 'Inter';              /* шрифт Inter */
+    font-style: normal;                /* обычный стиль */
+    font-weight: 700;                  /* жирность 700 (Bold) */
+    font-size: 24px;                   /* размер шрифта 24px */
 
-    padding-left: 65px;
-    padding-top: 40px;
+    padding-left: 65px;                /* внутренний отступ слева 65px */
+    padding-top: 40px;                  /* внутренний отступ сверху 40px */
 
-    color: #4CC9F0;
+    color: #4CC9F0;                    /* цвет текста — голубой */
 }
 
+/* ТЕКСТ В ФУТЕРЕ (ВТОРОСТЕПЕННЫЙ) */
 .footer .text-footer-A {
-    width: 500px;
-    height: 45px;
+    width: 500px;                      /* ширина блока 500px */
+    height: 45px;                      /* высота блока 45px */
 
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    padding-left: 65px;
-    padding-top: 50px;
-    text-align: left;
+    font-family: 'Inter';              /* шрифт Inter */
+    font-style: normal;                /* обычный стиль */
+    font-weight: 400;                  /* жирность 400 (Normal) */
+    font-size: 16px;                   /* размер шрифта 16px */
+    padding-left: 65px;                /* внутренний отступ слева 65px */
+    padding-top: 50px;                  /* внутренний отступ сверху 50px */
+    text-align: left;                  /* выравнивание текста по левому краю */
 
-    color: #B0B0C0;
+    color: #B0B0C0;                    /* цвет текста — серый */
 }
 
+/* ТЕКСТ В ФУТЕРЕ (ТРЕТИЙ) */
 .footer .text-footer-B {
-    width: 500px;
-    height: 45px;
+    width: 500px;                      /* ширина блока 500px */
+    height: 45px;                      /* высота блока 45px */
     
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    padding-left: 65px;
-    padding-top: 60px;
+    font-family: 'Inter';              /* шрифт Inter */
+    font-style: normal;                /* обычный стиль */
+    font-weight: 400;                  /* жирность 400 (Normal) */
+    font-size: 14px;                   /* размер шрифта 14px */
+    padding-left: 65px;                /* внутренний отступ слева 65px */
+    padding-top: 60px;                  /* внутренний отступ сверху 60px */
     
-    color: #666666;
+    color: #666666;                    /* цвет текста — темно-серый */
 }
