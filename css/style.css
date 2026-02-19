@@ -297,7 +297,7 @@ a {
     font-size: 16px;
     color: #FFFFFF;
 
-    margin-left: 20px;
+    margin-left: 18px;
     margin-top: 15px;
 }
 
@@ -318,7 +318,7 @@ a {
     font-size: 16px;
     color: #FFFFFF;
 
-    margin-left: 20px;
+    margin-left: 18px;
     margin-top: 15px;
 }
 
@@ -339,7 +339,7 @@ a {
     font-size: 16px;
     color: #FFFFFF;
 
-    margin-left: 20px;
+    margin-left: 18px;
     margin-top: 15px;
 }
 
@@ -360,7 +360,7 @@ a {
     font-size: 16px;
     color: #000000;
 
-    margin-left: 20px;
+    margin-left: 18px;
     margin-top: 15px;
 }
 
@@ -381,7 +381,7 @@ a {
     font-size: 16px;
     color: #ffffff;
 
-    margin-left: 20px;
+    margin-left: 18px;
     margin-top: 15px;
 }
 
@@ -402,7 +402,7 @@ a {
     font-size: 16px;
     color: #ffffff;
 
-    margin-left: 20px;
+    margin-left: 18px;
     margin-top: 15px;
 }
 
@@ -411,8 +411,10 @@ a {
 }
 
 .editor .background-editor .work-pos {
-    position: absolute; 
-    display: flex;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-color: rgba(22, 33, 62, 0.0) rgba(22, 33, 62, 0.0);
+
     width: 800px;
     height: 619px;
     top: 79px;
