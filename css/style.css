@@ -470,6 +470,12 @@ a {
     background: #0A0A1A;
     border: 1px solid rgba(0, 255, 157, 0.15);
     border-radius: 12px;
+
+    color: #019745;
+    font-size : 20px;
+    font-family: 'Orbitron', 'Courier New', monospace;
+    font-weight: bolder;
+    overflow-y: auto;
 }
 
 .editor .background-editor .background-console .for-variables {

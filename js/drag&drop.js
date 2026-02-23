@@ -20,6 +20,10 @@ class DragDropManager {
             this.workspace.style.display = 'block';
             this.workspace.style.position = 'relative';
             this.workspace.style.padding = '0 35px';
+
+            const spacer = document.createElement('div');
+            spacer.style.height = '20px';  
+            this.workspace.insertBefore(spacer, this.workspace.firstChild);
         }
 
         this.blocks.forEach(block => {
@@ -44,17 +48,24 @@ class DragDropManager {
         this.offsetY = e.clientY - rect.top;
 
         this.isDragging = true;
+        
+        
+        this.previewElement = this.draggedElement.cloneNode(true);
+        this.previewElement.style.position = 'absolute';
+        this.previewElement.style.opacity = '0.5';
+        this.previewElement.style.pointerEvents = 'none';
+        this.previewElement.style.zIndex = '1000';
+        this.previewElement.style.width = this.draggedElement.offsetWidth + 'px';
+        document.body.appendChild(this.previewElement);
     }
 
     onMouseMove(e) {
-        if (!this.draggedElement) return;
+        if (!this.draggedElement || !this.previewElement) return;
         
         e.preventDefault();
         
-        if (this.isDragging && this.previewElement) {
-            this.previewElement.style.left = (e.clientX - this.offsetX) + 'px';
-            this.previewElement.style.top = (e.clientY - this.offsetY) + 'px';
-        }
+        this.previewElement.style.left = (e.clientX - this.offsetX) + 'px';
+        this.previewElement.style.top = (e.clientY - this.offsetY) + 'px';
     }
 
     onMouseUp(e) {
@@ -99,38 +110,51 @@ class DragDropManager {
         container.style.width = 'calc(100% - 70px)';
         container.style.margin = '0 auto 10px auto';
         
-        const newElement = document.createElement('div');
-        newElement.textContent = originalElement.textContent;
+        
+        const newElement = originalElement.cloneNode(false); 
+        
+        
         newElement.className = originalElement.className;
+        
         
         const computedStyle = window.getComputedStyle(originalElement);
         for (let prop of computedStyle) {
             newElement.style[prop] = computedStyle.getPropertyValue(prop);
         }
         
-        newElement.style.display = 'block';
-        newElement.style.width = '100%';
+    
+        newElement.style.display = 'flex';
+        newElement.style.alignItems = 'center';
+        newElement.style.flexWrap = 'wrap';
+        newElement.style.gap = '8px';
+        newElement.style.padding = '10px';
         newElement.style.margin = '0';
+        newElement.style.width = '100%';
         newElement.style.boxSizing = 'border-box';
         newElement.removeAttribute('draggable');
+        
+        this.addTextToBlock(newElement, originalElement.textContent);
+        
+        this.addInputFields(newElement, originalElement.textContent);
         
         const deleteBtn = document.createElement('span');
         deleteBtn.innerHTML = '×';
         deleteBtn.style.position = 'absolute';
-        deleteBtn.style.top = '0px';
-        deleteBtn.style.right = '0px';
-        deleteBtn.style.width = '20px';
-        deleteBtn.style.height = '20px';
+        deleteBtn.style.top = '-10px';
+        deleteBtn.style.right = '-10px';
+        deleteBtn.style.width = '24px';
+        deleteBtn.style.height = '24px';
         deleteBtn.style.backgroundColor = '#ff4444';
         deleteBtn.style.color = 'white';
         deleteBtn.style.borderRadius = '50%';
         deleteBtn.style.display = 'flex';
         deleteBtn.style.alignItems = 'center';
         deleteBtn.style.justifyContent = 'center';
-        deleteBtn.style.fontSize = '16px';
+        deleteBtn.style.fontSize = '18px';
         deleteBtn.style.fontWeight = 'bold';
         deleteBtn.style.cursor = 'pointer';
         deleteBtn.style.zIndex = '10';
+        deleteBtn.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
         
         container.appendChild(newElement);
         container.appendChild(deleteBtn);
@@ -139,6 +163,7 @@ class DragDropManager {
         if (titleL) {
             titleL.style.display = 'none';
         }
+        
         const existingBlocks = this.workspace.querySelectorAll('.workspace-block-container');
         
         if (existingBlocks.length === 0 || insertPosition >= existingBlocks.length) {
@@ -159,6 +184,117 @@ class DragDropManager {
                 }
             }
         });
+    }
+
+    addTextToBlock(element, blockText) {
+        const iconSpan = document.createElement('span');
+        iconSpan.style.marginRight = '5px';
+        iconSpan.style.fontSize = '18px';
+        
+        if (blockText.includes("Объявить переменную")) {
+            iconSpan.textContent = 'Переменная';
+        } else if (blockText.includes("Присвоить значение")) {
+            iconSpan.textContent = 'Присвоить';
+        } else if (blockText.includes("Арифметическое")) {
+            iconSpan.textContent = 'Выражение';
+        } else if (blockText.includes("Если")) {
+            iconSpan.textContent = 'Если';
+        } else if (blockText.includes("Массив")) {
+            iconSpan.textContent = 'Массив';
+        } else if (blockText.includes("Цикл")) {
+            iconSpan.textContent = 'Цикл';
+        } else if (blockText.includes("Вывести")) {
+            iconSpan.textContent = 'Вывести';
+        } else {
+            iconSpan.textContent = '🔹';
+        }
+        
+        element.appendChild(iconSpan);
+    }
+
+    addInputFields(element, blockText) {
+
+        const inputStyle = {
+            backgroundColor: 'rgba(10, 87, 90, 0.89)',
+            color: 'white',
+            border: '2px solid rgb(0, 0, 0)',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            fontSize: '16px',
+            outline: 'none',
+            fontFamily: 'inherit'
+        };
+        
+        if (blockText.includes("Объявить переменную")) {
+            
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.name = 'var-name';
+            Object.assign(nameInput.style, inputStyle);
+            nameInput.style.width = '150px';
+            nameInput.style.height = '40px';
+            
+            element.appendChild(nameInput);
+        }
+        else if (blockText.includes("Присвоить значение")) {
+            
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.name = 'assign-name';
+            Object.assign(nameInput.style, inputStyle);
+            nameInput.style.width = '70px';
+            
+            element.appendChild(nameInput);
+            
+            
+            const equalsSpan = document.createElement('span');
+            equalsSpan.textContent = '=';
+            equalsSpan.style.margin = '0 5px';
+            equalsSpan.style.fontWeight = 'bold';
+            element.appendChild(equalsSpan);
+            
+            
+            const valueInput = document.createElement('input');
+            valueInput.type = 'text';
+            valueInput.name = 'assign-value';
+            Object.assign(valueInput.style, inputStyle);
+            valueInput.style.width = '70px';
+            
+            element.appendChild(valueInput);
+        }
+        else if (blockText.includes("Вывести в консоль")) {
+            
+            const printSpan = document.createElement('span');
+            printSpan.style.marginRight = '5px';
+            element.appendChild(printSpan);
+            
+            
+            const valueInput = document.createElement('input');
+            valueInput.type = 'text';
+            valueInput.placeholder = 'переменная/число';
+            valueInput.name = 'print-value';
+            Object.assign(valueInput.style, inputStyle);
+            valueInput.style.width = '150px';
+            valueInput.style.height = '40px';
+            
+            element.appendChild(valueInput);
+        }
+        else if (blockText.includes("Если (if)")) {
+              
+            const condInput = document.createElement('input');
+            condInput.type = 'text';
+            condInput.name = 'if-condition';
+            Object.assign(condInput.style, inputStyle);
+            condInput.style.width = '100px';
+            
+            element.appendChild(condInput);
+        }
+        else {
+            
+            const textSpan = document.createElement('span');
+            textSpan.textContent = blockText;
+            element.appendChild(textSpan);
+        }
     }
 
     cleanup() {
