@@ -295,7 +295,7 @@ class DragDropManager {
             textSpan.textContent = blockText;
             element.appendChild(textSpan);
         }
-    }
+    }ф
 
     cleanup() {
         if (this.previewElement) {

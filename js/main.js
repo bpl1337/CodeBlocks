@@ -31,7 +31,7 @@ class Interpreter{
     }
 
     #print(text){
-        this.#consolePanel.innerHTML += text + '<br>';
+        this.#consolePanel.innerHTML +=">> "+ text + '<br>';
         this.#consolePanel.scrollTop = this.#consolePanel.scrollHeight;
     }
 
@@ -148,18 +148,28 @@ class Interpreter{
 
             const currentSymbol = expression[i];
 
-            if(currentSymbol === " "){
+            if(currentSymbol === ' '){
                 i+=1;
                 continue;
             }
 
             if(currentSymbol >= '0' && currentSymbol <= '9'){
                 let num = "";
-                while(i<expression.length && expression[i] >= '0' && expression[i] <= '9'){
-                    num+= expression[i];
-                    i+=1;
+                let dotFlag = false;
+                while(i<expression.length){
+                    if(expression[i] >= '0' && expression[i] <= '9'){
+                        num+= expression[i];
+                        i+=1;
+                    }else if(expression[i] === '.' && !dotFlag){
+                        dotFlag = true;
+                        num+=expression[i];
+                        i+=1;
+                    }else{
+                        this.#print(`Некорректный символ ${expression[i]}`);
+                        return;
+                    }
                 }
-                tokens.push({type : "number", value : parseInt(num)});
+                tokens.push({type : "number", value : parseFloat(num)});
                 continue;
             }
 
@@ -194,7 +204,6 @@ class Interpreter{
         const outPut = [];
         const stack = [];
         const importance = {"+" : 1, "-" : 1, "*" : 2, "/" : 2};
-        //[3] [+] [5] [*] [2] [-] [(] [8] [/] [4] [+] [2] [)] [*] [(] [7] [-] [3] [)] [^] [2]
 
         for(const token of tokens){
 
@@ -356,7 +365,7 @@ class AssignmentNode extends ASTNode{
 
     execute(interpreter){
         if(!interpreter.hasVariable(this.#name)){
-            interpreter.print(`Переменная ${this.#name} не объявлена`);
+            interpreter.print(`Ошибка, переменная "${this.#name}" не объявлена`)
             return;
         }
 
@@ -405,8 +414,7 @@ class VariableNode extends ExpressionNode{
         const value = interpreter.getVariable(this.#name);
 
         if(value === undefined){
-            interpreter.print(`Переменная ${this.#name} не объявлена`);
-            return;
+            return `Error initializing a variable "${this.#name}"`;
         }
 
         return value;
