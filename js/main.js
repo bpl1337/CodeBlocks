@@ -17,17 +17,21 @@ class Interpreter{
 
         let runButton = document.getElementById("onBtn");
 
-        runButton.addEventListener("click", click => {
-            this.#run();
-        });
+        if (runButton) {
+            runButton.addEventListener("click", click => {
+                this.#run();
+            });
+        }
 
         let clearButton = document.getElementById("clearBtn");
 
-        clearButton.addEventListener("click", click => {
-            this.#clearConsole();
-            this.#clearVariables();
-            this.#clearWorkSpace();
-        });
+        if (clearButton) {
+            clearButton.addEventListener("click", click => {
+                this.#clearConsole();
+                this.#clearVariables();
+                this.#clearWorkSpace();
+            });
+        }
     }
 
     #print(text){
@@ -85,13 +89,13 @@ class Interpreter{
             return;
         }
 
-        const programNode = this.#buildProgramNode(blocks);
+        const programNode = this.#buildProgramNode(blocks, false);
 
         programNode.execute(this);
 
     }
 
-    #buildProgramNode(blocks){
+    #buildProgramNode(blocks, isIndoor = false){
 
         const statements = [];
 
@@ -100,40 +104,65 @@ class Interpreter{
         while(i<blocks.length){
 
             const block = blocks[i];
-            const blockElement = block.querySelector("div:first-child");
+            const blockElement = block.children[0];
 
             if(!blockElement){
                 i+=1;
                 continue;
             }
 
-            if(blockElement.querySelector('input[name="var-name"]')){
+            if(!isIndoor && block.closest('.block-children')){
+                i += 1;
+                continue;
+            }
 
-                const name = blockElement.querySelector('input[name="var-name"]').value;
+            if(blockElement.querySelector(':scope > input[name="var-name"]')){
+
+                const name = blockElement.querySelector(':scope > input[name="var-name"]').value;
 
                 statements.push(new DeclarationNode(name));
                 
                 i+=1;
 
-            }else if(blockElement.querySelector('input[name="assign-name"]')){
+            }else if(blockElement.querySelector(':scope > input[name="assign-name"]')){
 
-                const name = blockElement.querySelector('input[name="assign-name"]').value;
+                const name = blockElement.querySelector(':scope > input[name="assign-name"]').value;
 
-                const expressionText = blockElement.querySelector('input[name="assign-value"]').value;
+                const expressionText = blockElement.querySelector(':scope > input[name="assign-value"]').value;
 
                 const expressionNode = this.#buildExpressionNode(expressionText);
 
                 statements.push(new AssignmentNode(name, expressionNode));
                 i+=1;
-            }else if(blockElement.querySelector('input[name="print-value"]')){
+            }else if(blockElement.querySelector(':scope > input[name="print-value"]')){
 
-                const expressionText = blockElement.querySelector('input[name="print-value"]').value;
+                const expressionText = blockElement.querySelector(':scope > input[name="print-value"]').value;
 
                 const expressionNode = this.#buildExpressionNode(expressionText);
 
                 statements.push(new PrintNode(expressionNode));
                 i+=1;
-            }else{
+            }else if(blockElement.querySelector(':scope > input[name="if-condition"]')){
+
+                const conditionText = blockElement.querySelector('input[name="if-condition"]').value;
+                const childrenContainer = blockElement.querySelector(':scope > .block-children');
+                const bodyBlocks = [];
+
+                if(childrenContainer){
+
+                    const indoorBlocks = childrenContainer.querySelectorAll('.workspace-block-container');
+                    indoorBlocks.forEach(indoorBlock => bodyBlocks.push(indoorBlock));
+                }
+
+                const conditionNode = this.#buildExpressionNode(conditionText);
+                const bodyNode = this.#buildProgramNode(bodyBlocks, true);
+
+                statements.push(new IfNode(conditionNode, bodyNode));
+
+                i+=1;
+            }
+            
+            else{
                 i+=1;
             }
         }
@@ -165,8 +194,7 @@ class Interpreter{
                         num+=expression[i];
                         i+=1;
                     }else{
-                        this.#print(`Некорректный символ ${expression[i]}`);
-                        return;
+                        break;
                     }
                 }
                 tokens.push({type : "number", value : parseFloat(num)});
@@ -188,7 +216,16 @@ class Interpreter{
                 continue;                          
             }
 
-            if('+-*/()'.includes(currentSymbol)){
+            if(i+1<expression.length){
+                const doubledOperator = expression.substr(i, 2);
+                if(['>=', '<=', '==', '!=', '**', '&&', '||'].includes(doubledOperator)){
+                    tokens.push({type: "operator", value : doubledOperator});
+                    i+=2;
+                    continue;
+                }
+            }
+
+            if('+-*/()><[]'.includes(currentSymbol)){
                 tokens.push({type : "operator", value : currentSymbol});
                 i+=1;
                 continue;
@@ -203,7 +240,16 @@ class Interpreter{
     #buildRPN(tokens){
         const outPut = [];
         const stack = [];
-        const importance = {"+" : 1, "-" : 1, "*" : 2, "/" : 2};
+        const importance = {
+            "[" : 6, "]": 6,
+            "**" : 5,
+            "*" : 4, "/" : 4, 
+            "+" : 3, "-" : 3, 
+            ">=" : 2, "<=" : 2, 
+            "==": 2, "!=" : 2, 
+            ">" : 2, "<" : 2,
+            "&&" : 1, "||" : 0
+        };
 
         for(const token of tokens){
 
@@ -456,10 +502,122 @@ class BinaryOperationNode extends ExpressionNode{
                     return;
                 }
                 return leftOperandValue / rightOperandValue;
+            case '>' : 
+                return leftOperandValue>rightOperandValue;
+            case '<' :
+                return leftOperandValue<rightOperandValue;
+            case '**' : 
+                return leftOperandValue**rightOperandValue;
+            case '>=' :
+                return leftOperandValue>=rightOperandValue;
+            case '<=' : 
+                return leftOperandValue<=rightOperandValue;
+            case '==' :
+                return leftOperandValue == rightOperandValue;
+            case '!=' :
+                return leftOperandValue!=rightOperandValue;
+            case '&&' : 
+                return leftOperandValue && rightOperandValue;
+            case '||' : 
+                return leftOperandValue || rightOperandValue;
             default:
                 interpreter.print(`Неизвестный оператор ${this.#operator}`);
                 return;
         }
+    }
+}
+
+class IfNode extends ASTNode{
+
+    #condition;
+    #body;
+
+    constructor(condition, body){
+        super();
+        this.#condition = condition;
+        this.#body = body;
+    }
+
+    execute(interpreter){
+        
+        const conditionValue = this.#condition.evaluate(interpreter);
+
+        if(conditionValue){
+            this.#body.execute(interpreter);
+        }
+    }
+}
+
+class ArrayDeclarationNode extends ASTNode{
+
+    #name;
+    #elements;
+
+    constructor(name, elements){
+        super();
+        this.#name = name;
+        this.#elements = elements;
+    }
+
+    execute(interpreter){
+
+        const arrayValues = [];
+        
+        for(const element of this.#elements){
+            arrayValues.push(element.evaluate(intertreter));
+        }
+
+        intertreter.declareVariable(this.#name);
+        interpreter.setVariable(this.#name, arrayValues);
+    }
+}
+
+class ArrayAccessNode extends ExpressionNode{
+
+    #array;
+    #index;
+
+    constructor(array, index){
+        super();
+        this.#array = array;
+        this.#index = index;
+    }
+
+    evaluate(interpreter){
+
+        const arrayValue = this.#array.evaluate(interpreter);
+        const indexValue = this.#index.evaluate(interpreter);
+
+        if(!Array.isArray(arrayValue)){
+            intertpreter.print(`${arrayValue} не массив`);
+            return null;
+        }
+
+        if(indexValue < 0 || indexValue >= arrayValue.length){
+            interpreter.print("List index out of range");
+            return null;
+        }
+
+        return arrayValue[indexValue];
+    }
+}
+
+class ArrayAssignmentNode extends ASTNode{
+
+    #array;
+    #index;
+    #value;
+
+    constructor(array, index, value){
+
+        super();
+        this.#array = array;
+        this.#index = index;
+        this.#value = value;
+    }
+
+    execute(interpreter){
+        const ArrayValue = this.#array.evaluate(interpreter);
     }
 }
 

@@ -542,3 +542,26 @@ a {
     
     color: #666666;
 }
+
+.block-children {
+    min-height: 30px;
+    border-left: 2px solid #ff9800;
+    padding-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    background-color: rgba(255, 152, 0, 0.05);
+    border-radius: 0 0 4px 4px;
+}
+
+.block-children .workspace-block-container {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
+.workspace-block-container {
+    transition: all 0.2s;
+}
+
+.workspace-block-container:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
