@@ -160,7 +160,39 @@ class Interpreter{
                 statements.push(new IfNode(conditionNode, bodyNode));
 
                 i+=1;
-            }
+            }else if(blockElement.querySelector(':scope > input[name="array-name"]')){
+                const name = blockElement.querySelector(':scope > input[name="array-name"]').value;
+                const arrayValueText = blockElement.querySelector('input[name="array-value"]').value;
+
+                const arrayNode = this.#buildExpressionNode(arrayValueText);
+
+                statements.push(new ArrayDeclarationNode(name, arrayNode));
+                i+=1;
+            }else if(blockElement.querySelector(':scope > input[name="array-element-name"]') && 
+                     blockElement.querySelector(':scope > input[name="array-element-value"]') && 
+                     blockElement.querySelector(':scope > input[name="array-element-index"]')){
+                        const arrayName = blockElement.querySelector(':scope > input[name="array-element-name"]').value;
+                        const valueText = blockElement.querySelector(':scope > input[name="array-element-value"]').value;
+                        const indexText = blockElement.querySelector(':scope > input[name="array-element-index"]').value;
+
+                        const arrayNode = new VariableNode(arrayName);
+                        const indexNode = this.#buildExpressionNode(indexText);
+                        const valueNode = this.#buildExpressionNode(valueText);
+
+                        statements.push(new ArrayAssignmentNode(arrayNode, indexNode, valueNode)); 
+                        i+=1;
+            }else if(blockElement.querySelector(':scope > input[name="array-get-name"]') &&
+                     blockElement.querySelector(':scope > input[name="array-get-index"]')){
+                        const arrayName = blockElement.querySelector(':scope > input[name="array-get-name"]').value;
+                        const indexText = blockElement.querySelector(':scope > input[name="array-get-index"]').value;
+
+                        const arrayNode = new VariableNode(arrayName);
+                        const indexNode = this.#buildExpressionNode(indexText);
+                        const accessNode = new ArrayAccessNode(arrayNode, indexNode);
+
+                        statements.push(new PrintNode(accessNode));
+                        i+=1;
+                     }
             
             else{
                 i+=1;
@@ -258,19 +290,27 @@ class Interpreter{
                 outPut.push(token);
 
             }
-            else if(token.value === "("){
+            else if(token.value === "(" || token.value === "["){
 
                 stack.push(token);
 
             }
-            else if(token.value === ")"){
+            else if(token.value === ")" || token.value === "]"){
 
-                while(stack.length > 0 && stack[stack.length-1].value != "("){
+                while(stack.length > 0 && 
+                      stack[stack.length-1].value != "(" && 
+                      stack[stack.length-1].value != "["
+                      
+                ){
 
                     outPut.push(stack.pop());
                 }
 
                 stack.pop();
+
+                if(token.value === "]"){
+                    outPut.push({type: "operator", value: "arrayAccess"}); 
+    }
             }
             else{
                 
@@ -304,6 +344,11 @@ class Interpreter{
 
                 stack.push(new VariableNode(token.value));
             }
+            else if(token.value === 'arrayAccess'){
+                const index = stack.pop();
+                const array = stack.pop();
+                stack.push(new ArrayAccessNode(array, index));
+            }
             else { 
 
                 const right = stack.pop();
@@ -320,6 +365,27 @@ class Interpreter{
         if (!text.trim()){
 
              return new NumberNode(0);
+        }
+
+        const trimmed = text.trim();
+        if(trimmed.startsWith('[') && trimmed.endsWith(']')){
+
+            const inner = trimmed.slice(1,-1).trim();
+
+            if(inner === ''){
+                return new ArrayLiteralNode([]);
+            }
+
+            const elements = [];
+            const parts = inner.split(',').map(part => part.trim());
+
+            for(const part of parts){
+                if(part){
+                    elements.push(this.#buildExpressionNode(part));
+                }
+            }
+            
+            return new ArrayLiteralNode(elements);
         }
         
         const tokens = this.#tokenize(text);
@@ -548,27 +614,52 @@ class IfNode extends ASTNode{
     }
 }
 
+class ArrayLiteralNode extends ExpressionNode{
+
+    #elements;
+
+    constructor(elements){
+        super();
+        this.#elements = elements;
+    }
+
+    evaluate(interpreter){
+        const result = [];
+
+        for(const element of this.#elements){
+
+            result.push(element.evaluate(interpreter));
+        }
+        return result;
+    }
+}
+
 class ArrayDeclarationNode extends ASTNode{
 
     #name;
-    #elements;
+    #arrayNode
 
-    constructor(name, elements){
+    constructor(name, arrayNode){
         super();
         this.#name = name;
-        this.#elements = elements;
+        this.#arrayNode = arrayNode;
     }
 
     execute(interpreter){
 
-        const arrayValues = [];
+        const arrayValue = this.#arrayNode.evaluate(interpreter);
         
-        for(const element of this.#elements){
-            arrayValues.push(element.evaluate(intertreter));
+        if (!Array.isArray(arrayValue)) {
+            interpreter.print(`${arrayValue} не массив`);
+            return null;
         }
+        
+        interpreter.declareVariable(this.#name);
+        interpreter.setVariable(this.#name, arrayValue);
+    }
 
-        intertreter.declareVariable(this.#name);
-        interpreter.setVariable(this.#name, arrayValues);
+    get name(){
+        return this.#name;
     }
 }
 
@@ -589,7 +680,7 @@ class ArrayAccessNode extends ExpressionNode{
         const indexValue = this.#index.evaluate(interpreter);
 
         if(!Array.isArray(arrayValue)){
-            intertpreter.print(`${arrayValue} не массив`);
+            interpreter.print(`${arrayValue} не массив`);
             return null;
         }
 
@@ -617,7 +708,26 @@ class ArrayAssignmentNode extends ASTNode{
     }
 
     execute(interpreter){
-        const ArrayValue = this.#array.evaluate(interpreter);
+        const arrayValue = this.#array.evaluate(interpreter);
+        const indexValue = this.#index.evaluate(interpreter);
+        const valueValue = this.#value.evaluate(interpreter);
+
+        if(!Array.isArray(arrayValue)){
+            interpreter.print(`${arrayValue} не массив`);
+            return null;
+        }
+
+        if(indexValue < 0 || indexValue >= arrayValue.length) {
+            interpreter.print(`List index out of range`);
+            return null;
+        }
+
+        arrayValue[indexValue] = valueValue;
+
+        const arrayName = this.#array.name;
+        if(arrayName){
+            interpreter.setVariable(arrayName, arrayValue);
+        }
     }
 }
 
