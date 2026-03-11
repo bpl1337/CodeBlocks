@@ -30,6 +30,7 @@ class Interpreter{
                 this.#clearConsole();
                 this.#clearVariables();
                 this.#clearWorkSpace();
+                this.#updateVariablesPanel();
             });
         }
     }
@@ -63,6 +64,31 @@ class Interpreter{
         this.#print("Очищено");
     }
 
+    #updateVariablesPanel() {
+        
+        this.#variablesPanel.innerHTML = '';
+        
+        const title = document.createElement('div');
+        title.className = 'variables-header';
+        title.textContent = 'Переменные';
+        this.#variablesPanel.appendChild(title);
+        
+        if (this.#variables.size === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'variables-empty';
+            empty.textContent = 'Нет переменных';
+            this.#variablesPanel.appendChild(empty);
+            return;
+        }
+
+        for (const [name, value] of this.#variables) {
+            const row = document.createElement('div');
+            row.className = 'variable-row';
+            row.textContent = `${name} = ${value}`;
+            this.#variablesPanel.appendChild(row);
+        }  
+    }
+
     declareVariable(name) {
         this.#variables.set(name, null);
     }
@@ -92,6 +118,8 @@ class Interpreter{
         const programNode = this.#buildProgramNode(blocks, false);
 
         programNode.execute(this);
+
+        this.#updateVariablesPanel();
 
     }
 
@@ -164,7 +192,7 @@ class Interpreter{
                 const name = blockElement.querySelector(':scope > input[name="array-name"]').value;
                 const arrayValueText = blockElement.querySelector('input[name="array-value"]').value;
 
-                const arrayNode = this.#buildExpressionNode(arrayValueText);
+                const arrayNode = this.#parseAsArray(arrayValueText);
 
                 statements.push(new ArrayDeclarationNode(name, arrayNode));
                 i+=1;
@@ -193,7 +221,27 @@ class Interpreter{
                         statements.push(new PrintNode(accessNode));
                         i+=1;
                      }
-            
+            else if(blockElement.querySelector(':scope > input[name="for-init"]')){
+                const initText = blockElement.querySelector('input[name="for-init"]').value;
+                const conditionText = blockElement.querySelector('input[name="for-condition"]').value;
+                const stepText = blockElement.querySelector('input[name="for-step"]').value;
+
+                const childrenContainer = blockElement.querySelector('.block-children');
+                const bodyBlocks = [];
+
+                if(childrenContainer){
+                    const indoorBlocks = childrenContainer.querySelectorAll('.workspace-block-container');
+                    indoorBlocks.forEach(block => bodyBlocks.push(block));
+                }
+
+                const initNode = this.#buildExpressionNode(initText);
+                const conditionNode = this.#buildExpressionNode(conditionText);
+                const stepNode = this.#buildExpressionNode(stepText);
+                const bodyNode = this.#buildProgramNode(bodyBlocks, true);
+
+                statements.push(new ForNode(initNode, conditionNode, stepNode, bodyNode));
+                i+=1;
+            }
             else{
                 i+=1;
             }
@@ -250,14 +298,14 @@ class Interpreter{
 
             if(i+1<expression.length){
                 const doubledOperator = expression.substr(i, 2);
-                if(['>=', '<=', '==', '!=', '**', '&&', '||'].includes(doubledOperator)){
+                if(['>=', '<=', '==', '!=', '**', '&&', '||', '+=', '-=', '//'].includes(doubledOperator)){
                     tokens.push({type: "operator", value : doubledOperator});
                     i+=2;
                     continue;
                 }
             }
 
-            if('+-*/()><[]'.includes(currentSymbol)){
+            if('+-*/()><[]=%'.includes(currentSymbol)){
                 tokens.push({type : "operator", value : currentSymbol});
                 i+=1;
                 continue;
@@ -310,7 +358,7 @@ class Interpreter{
 
                 if(token.value === "]"){
                     outPut.push({type: "operator", value: "arrayAccess"}); 
-    }
+                }
             }
             else{
                 
@@ -367,25 +415,20 @@ class Interpreter{
              return new NumberNode(0);
         }
 
-        const trimmed = text.trim();
-        if(trimmed.startsWith('[') && trimmed.endsWith(']')){
+        if (text.includes('=')) {
+            const parts = text.split('=').map(s => s.trim());
+            if (parts.length === 2) {
+                const namePart = parts[0];
+                const valueText = parts[1];
 
-            const inner = trimmed.slice(1,-1).trim();
+                const nameTokens = this.#tokenize(namePart);
 
-            if(inner === ''){
-                return new ArrayLiteralNode([]);
-            }
-
-            const elements = [];
-            const parts = inner.split(',').map(part => part.trim());
-
-            for(const part of parts){
-                if(part){
-                    elements.push(this.#buildExpressionNode(part));
+                if (nameTokens.length === 1 && nameTokens[0].type === 'variable') {
+                    const name = nameTokens[0].value;
+                    const valueNode = this.#buildExpressionNode(valueText);
+                    return new ForInitNode(name, valueNode);
                 }
             }
-            
-            return new ArrayLiteralNode(elements);
         }
         
         const tokens = this.#tokenize(text);
@@ -397,6 +440,25 @@ class Interpreter{
         
         const rpn = this.#buildRPN(tokens);
         return this.#buildExpressionTree(rpn);
+    }
+
+    #parseAsArray(text) {
+        if (!text.trim()) {
+            return new ArrayLiteralNode([]);
+        }
+        
+        
+        const parts = text.split(',').map(part => part.trim());
+        const elements = [];
+        
+        for (const part of parts) {
+            if (part) {
+
+                elements.push(this.#buildExpressionNode(part));
+            }
+        }
+        
+        return new ArrayLiteralNode(elements);
     }
 }
 
@@ -436,11 +498,55 @@ class DeclarationNode extends ASTNode{
     execute(interpreter){
 
         interpreter.declareVariable(this.#name);
-
+        interpreter.setVariable(this.#name, 0);
     }
 
     get name(){
         return this.#name;
+    }
+}
+
+class AssignmentExpressionNode extends ExpressionNode {
+    #name;
+    #value;
+
+    constructor(name, value) {
+        super();
+        this.#name = name;
+        this.#value = value;
+    }
+
+    evaluate(interpreter) {
+        
+        if (!interpreter.hasVariable(this.#name)) {
+            interpreter.print(`Ошибка: переменная "${this.#name}" не объявлена`);
+            return null;
+        }
+        
+        const value = this.#value.evaluate(interpreter);
+        interpreter.setVariable(this.#name, value);
+        return value;
+    }
+}
+
+class ForInitNode extends ExpressionNode {
+    #name;
+    #value;
+
+    constructor(name, value) {
+        super();
+        this.#name = name;
+        this.#value = value;
+    }
+
+    evaluate(interpreter) {
+        if (!interpreter.hasVariable(this.#name)) {
+            interpreter.declareVariable(this.#name);
+        }
+        
+        const value = this.#value.evaluate(interpreter);
+        interpreter.setVariable(this.#name, value);
+        return value;
     }
 }
 
@@ -568,6 +674,12 @@ class BinaryOperationNode extends ExpressionNode{
                     return;
                 }
                 return leftOperandValue / rightOperandValue;
+            case '%' : 
+                if(rightOperandValue === 0){
+                    interpreter.print(`Ошибка деление на 0`);
+                    return;
+                }
+                return leftOperandValue % rightOperandValue;
             case '>' : 
                 return leftOperandValue>rightOperandValue;
             case '<' :
@@ -584,8 +696,26 @@ class BinaryOperationNode extends ExpressionNode{
                 return leftOperandValue!=rightOperandValue;
             case '&&' : 
                 return leftOperandValue && rightOperandValue;
+            case '//' : 
+                return parseInt(leftOperandValue / rightOperandValue);
             case '||' : 
                 return leftOperandValue || rightOperandValue;
+            case '+=' : 
+                const plusNewValue = leftOperandValue + rightOperandValue;
+
+                if (this.#leftOperand instanceof VariableNode) {
+                    interpreter.setVariable(this.#leftOperand.name, plusNewValue);
+                }
+    
+                return plusNewValue;
+            case '-=' :
+                const minusNewValue = leftOperandValue - rightOperandValue;
+
+                if (this.#leftOperand instanceof VariableNode) {
+                    interpreter.setVariable(this.#leftOperand.name, minusNewValue);
+                }
+    
+                return minusNewValue;
             default:
                 interpreter.print(`Неизвестный оператор ${this.#operator}`);
                 return;
@@ -690,6 +820,51 @@ class ArrayAccessNode extends ExpressionNode{
         }
 
         return arrayValue[indexValue];
+    }
+}
+
+class ForNode extends ASTNode {
+    #init;
+    #condition;
+    #step;
+    #body;
+
+    constructor(init, condition, step, body) {
+        super();
+        this.#init = init;
+        this.#condition = condition;
+        this.#step = step;
+        this.#body = body;
+    }
+
+    execute(interpreter) {
+        // Инициализация (выполняется один раз)
+        if (this.#init) {
+            if (this.#init instanceof ASTNode) {
+                this.#init.execute(interpreter);
+            } else {
+                this.#init.evaluate(interpreter);
+            }
+        }
+
+        // Цикл
+        while (true) {
+            // Проверка условия
+            const conditionValue = this.#condition.evaluate(interpreter);
+            if (!conditionValue) break;
+            
+            // Тело цикла
+            this.#body.execute(interpreter);
+            
+            // Шаг
+            if (this.#step) {
+                if (this.#step instanceof ASTNode) {
+                    this.#step.execute(interpreter);
+                } else {
+                    this.#step.evaluate(interpreter);
+                }
+            }
+        }
     }
 }
 

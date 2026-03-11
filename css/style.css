@@ -549,7 +549,7 @@ a {
     padding-left: 10px;
     margin-top: 10px;
     margin-bottom: 5px;
-    background-color: rgba(255, 152, 0, 0.05);
+    background-color: rgba(83, 82, 82, 0.767) !important;
     border-radius: 0 0 4px 4px;
 }
 
@@ -564,4 +564,443 @@ a {
 
 .workspace-block-container:hover {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.drag-preview {
+    position: absolute;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    border-radius: 8px;
+}
+
+.insert-marker {
+    height: 4px;
+    background-color: #4caf50;
+    position: absolute;
+    z-index: 999;
+    pointer-events: none;
+    display: none;
+    box-shadow: 0 0 8px #4caf50;
+    border-radius: 2px;
+}
+
+.delete-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 24px;
+    height: 24px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.block-children.drag-over {
+    border-left: 6px solid #4caf50 !important;
+    background-color: rgba(76, 175, 80, 0.1) !important;
+    transition: all 0.2s;
+}
+
+.block-input {
+    background-color: #0a595ce3;
+    color: white !important;
+    border: 2px solid #000000;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 16px;
+    outline: none;
+    font-family: inherit;
+    height: 40px;
+}
+
+.block-input.small {
+    width: 70px;
+}
+
+.block-input.tiny {
+    width: 50px;
+}
+
+.operator {
+    margin: 0 5px;
+    font-weight: bold;
+    color: white;
+}
+
+.block-icon {
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+.workspace-block-container {
+    position: relative;
+    width: calc(100% - 70px);
+    margin: 0 auto 10px auto;
+    box-sizing: border-box;
+    transition: all 0.2s;
+}
+
+.workspace-block-container:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.workspace-block-container .variables,
+.workspace-block-container .arithmetic,
+.workspace-block-container .conditions,
+.workspace-block-container .array,
+.workspace-block-container .cycle,
+.workspace-block-container .print {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.workspace-block-container {
+    position: relative;
+    width: calc(100% - 70px);
+    margin: 0 auto 10px auto;
+    box-sizing: border-box;
+}
+
+.workspace-block-container .variables,
+.workspace-block-container .arithmetic,
+.workspace-block-container .conditions,
+.workspace-block-container .array,
+.workspace-block-container .cycle,
+.workspace-block-container .print {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, #4CC9F0, #3A86FF);
+    border-radius: 8px;
+    font-family: 'Inter';
+    font-weight: 700;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.workspace-block-container .arithmetic {
+    background: linear-gradient(135deg, #9C89B8, #7B6C9C);
+}
+
+.workspace-block-container .conditions {
+    background: linear-gradient(135deg, #F72585, #B5179E);
+}
+
+.workspace-block-container .array {
+    background: linear-gradient(135deg, #F9C74F, #F9844A);
+    color: #000000;
+}
+
+.workspace-block-container .cycle {
+    background: linear-gradient(135deg, #4361EE, #3A0CA3);
+}
+
+.workspace-block-container .print {
+    background: linear-gradient(135deg, #43AA8B, #2D6A4F);
+}
+
+.block-input {
+    background-color: #0a595ce3;
+    color: white;
+    border: 2px solid #000000;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 16px;
+    outline: none;
+    font-family: inherit;
+    height: 40px;
+}
+
+.block-input.small {
+    width: 70px;
+}
+
+.block-input.tiny {
+    width: 50px;
+}
+
+.operator {
+    margin: 0 5px;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+}
+
+.block-icon {
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+.delete-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 24px;
+    height: 24px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.block-children {
+
+    min-height: 30px;
+    border-left: 2px solid #ff9800;
+    padding-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    background-color: rgba(255, 152, 0, 0.05);
+    border-radius: 0 0 4px 4px;
+    width: 100%;
+}
+
+.block-children .workspace-block-container {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
+.block-children.drag-over {
+    border-left: 6px solid #4caf50 !important;
+    background-color: rgba(76, 175, 80, 0.1) !important;
+    transition: all 0.2s;
+}
+
+.drag-preview {
+    position: absolute;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    border-radius: 8px;
+}
+
+.insert-marker {
+    height: 4px;
+    background-color: #4caf50;
+    position: absolute;
+    z-index: 999;
+    pointer-events: none;
+    display: none;
+    box-shadow: 0 0 8px #4caf50;
+    border-radius: 2px;
+}
+
+
+.workspace-block-container {
+    position: relative;
+    width: calc(100% - 70px);
+    margin: 0 auto 10px auto;
+    box-sizing: border-box;
+}
+
+.workspace-block-container .variables,
+.workspace-block-container .arithmetic,
+.workspace-block-container .conditions,
+.workspace-block-container .array,
+.workspace-block-container .cycle,
+.workspace-block-container .print {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 8px;
+    font-family: 'Inter';
+    font-weight: 700;
+    font-size: 16px;
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #4CC9F0, #3A86FF);
+}
+
+.workspace-block-container .arithmetic {
+    background: linear-gradient(135deg, #9C89B8, #7B6C9C);
+}
+
+.workspace-block-container .conditions {
+    background: linear-gradient(135deg, #F72585, #B5179E);
+}
+
+.workspace-block-container .array {
+    background: linear-gradient(135deg, #F9C74F, #F9844A);
+    color: #000000;
+}
+
+.workspace-block-container .cycle {
+    background: linear-gradient(135deg, #4361EE, #3A0CA3);
+}
+
+.workspace-block-container .print {
+    background: linear-gradient(135deg, #43AA8B, #2D6A4F);
+}
+
+.block-input {
+    background-color: #0a595ce3;
+    color: rgb(0, 0, 0);
+    border: 2px solid #000000;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 16px;
+    outline: none;
+    font-family: inherit;
+    height: 40px;
+}
+
+.block-input.small {
+    width: 70px;
+}
+
+.block-input.tiny {
+    width: 50px;
+}
+
+.operator {
+    margin: 0 5px;
+    font-weight: bold;
+    color: white;
+}
+
+.block-icon {
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+.delete-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 24px;
+    height: 24px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.block-children {
+    min-height: 30px;
+    border-left: 2px solid #ff9800;
+    padding-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    background-color: rgba(255, 152, 0, 0.05);
+    border-radius: 0 0 4px 4px;
+    width: 100%;
+}
+
+.block-children .workspace-block-container {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
+.block-children.drag-over {
+    border-left: 6px solid #4caf50 !important;
+    background-color: rgba(76, 175, 80, 0.1) !important;
+    transition: all 0.2s;
+}
+
+.drag-preview {
+    position: absolute;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    border-radius: 8px;
+}
+
+.insert-marker {
+    height: 4px;
+    background-color: #4caf50;
+    position: absolute;
+    z-index: 999;
+    pointer-events: none;
+    display: none;
+    box-shadow: 0 0 8px #4caf50;
+    border-radius: 2px;
+}
+
+.work-pos {
+    position: relative;
+    min-height: 200px;
+}
+
+.title-L {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 624px;
+    height: 64px;
+    margin: 30px auto;
+    background: rgba(22, 33, 62, 0.8);
+    border: 1px solid rgba(76, 201, 240, 0.3);
+    backdrop-filter: blur(7.5px);
+    border-radius: 12px;
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+.work-pos {
+    padding-top: 20px;
+}
+
+.variables-header {
+    color: #019745;
+    font-family: 'Orbitron', 'Courier New', monospace;
+    font-size: 20px;
+    font-weight: bolder;
+    padding: 10px;
+}
+
+.variables-empty {
+    color: #019745;
+    font-family: 'Orbitron', 'Courier New', monospace;
+    font-size: 18px;
+    padding: 10px;
+}
+
+.variable-row {
+    color: #019745;
+    font-family: 'Orbitron', 'Courier New', monospace;
+    font-size: 18px;
+    padding: 5px 10px;
 }
