@@ -147,22 +147,6 @@ a {
     border-radius: 16px;
 }
 
-.editor .text-main-H {
-    position: relative;
-    width: 399px;
-    height: 40px;
-    
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 30px;
-
-    top: 70px;
-    left: 230px;
-    
-    color: #4CC9F0;
-}
-
 .editor .editor-btn-on {
     position: relative;
     width: 164px;
