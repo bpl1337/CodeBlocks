@@ -1,10 +1,6 @@
-
-
 class ASTNode{
     execute(){}
 }
-
-
 
 class ProgramNode extends ASTNode{
     #statements;

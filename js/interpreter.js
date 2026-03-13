@@ -1,5 +1,3 @@
-
-
 class Interpreter{
     #variables = new Map();
     #consolePanel;

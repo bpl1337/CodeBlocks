@@ -1,5 +1,3 @@
-
-
 document.addEventListener("DOMContentLoaded", () => {
     new Interpreter(
         document.querySelector(".interpreter-console"),

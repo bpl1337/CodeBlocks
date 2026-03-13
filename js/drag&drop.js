@@ -1,5 +1,3 @@
-
-
 class DragDropManager {
     constructor() {
         this.draggedElement = null;

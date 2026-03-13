@@ -36,29 +36,29 @@
       <button class="editor-btn-on" id="onBtn">▶ Выполнить</button>
       <button class="editor-btn-clear" id="clearBtn">🗑 Очистить</button>
       <div class="background-editor">
-        <div class="nav">
-          <p class="name-block">📚 Библиотека блоков</p>
-          <p class="name-work">⚙️ Рабочая область</p>
-          <p class="name-console">📟 Консоль</p>
+          <div class="nav">
+            <p class="name-block">📚 Библиотека блоков</p>
+            <p class="name-work">⚙️ Рабочая область</p>
+            <p class="name-console">📟 Консоль</p>
         </div>
-        <div class="blocks">
-          <p class="state-1">📦 ПЕРЕМЕННЫЕ</p>
-          <div class="variables" draggable="true">Объявить переменную(ые)</div>
-          <div class="variables" draggable="true">Присвоить значение</div>
-          <p class="state-1">⚡ УСЛОВИЯ</p>
-          <div class="conditions" draggable="true">Если (if)</div>
-          <div class="conditions" draggable="true">Если-иначе (if-else)</div>
-          <p class="state-1">📊 МАССИВЫ</p>
-          <div class="array" draggable="true">Объявить массив</div>
-          <div class="array" draggable="true">Элемент массива =</div>
-          <div class="array" draggable="true">Получить элемент</div>
-          <p class="state-1">🔄 ЦИКЛЫ</p>
-          <div class="cycle" draggable="true">Цикл While</div>
-          <div class="cycle" draggable="true">Цикл For(C++ style)</div>
-          <p class="state-1">📟 ВЫВОД</p>
-          <div class="print" draggable="true">Вывести в консоль</div>
-          <div class="step"></div>
-        </div>
+        <ul class="blocks">
+          <li><p class="state-1">📦 ПЕРЕМЕННЫЕ</p></li>
+          <li><div class="variables" draggable="true">Объявить переменную(ые)</div></li>
+          <li><div class="variables" draggable="true">Присвоить значение</div></li>
+          <li><p class="state-1">⚡ УСЛОВИЯ</p></li>
+          <li><div class="conditions" draggable="true">Если (if)</div></li>
+          <li><div class="conditions" draggable="true">Если-иначе (if-else)</div></li>
+          <li><p class="state-1">📊 МАССИВЫ</p></li>
+          <li><div class="array" draggable="true">Объявить массив</div></li>
+          <li><div class="array" draggable="true">Элемент массива =</div></li>
+          <li><div class="array" draggable="true">Получить элемент</div></li>
+          <li><p class="state-1">🔄 ЦИКЛЫ</p></li>
+          <li><div class="cycle" draggable="true">Цикл While</div></li>
+          <li><div class="cycle" draggable="true">Цикл For(C++ style)</div></li>
+          <li><p class="state-1">📟 ВЫВОД</p></li>
+          <li><div class="print" draggable="true">Вывести в консоль</div></li>
+          <li><div class="step"></div></li>
+        </ul>
         <div class="work-pos">
           <div class="title-L">🎯 Перетаскивайте блоки сюда</div>
         </div>
@@ -81,5 +81,6 @@
     <script src="/js/Interpreter.js"></script>
     <script src="/js/Drag&Drop.js"></script>
     <script src="/js/Main.js"></script>
+    <script src="/js/Scroll.js"></script>
   </body>
 </html>
