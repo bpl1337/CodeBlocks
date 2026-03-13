@@ -1,3 +1,5 @@
+
+
 class DragDropManager {
     constructor() {
         this.draggedElement = null;
@@ -36,9 +38,7 @@ class DragDropManager {
 
         this.isDragging = true;
         
-
-        this.previewElement = this.draggedElement.cloneNode(true);
-        this.previewElement.classList.add('drag-preview');
+        this.previewElement = this.createGhostPreview(this.draggedElement);
         document.body.appendChild(this.previewElement);
         
         this.markerElement = document.createElement('div');
@@ -46,6 +46,20 @@ class DragDropManager {
         document.body.appendChild(this.markerElement);
         
         this.updatePreviewPosition(e);
+    }
+
+    createGhostPreview(originalElement) {
+        const preview = originalElement.cloneNode(true);
+        preview.classList.add('drag-preview');
+        
+        const computedStyle = window.getComputedStyle(originalElement);
+        const background = computedStyle.background || computedStyle.backgroundColor;
+        
+        preview.style.background = background;
+        preview.style.width = (originalElement.getBoundingClientRect().width) + 'px';
+        preview.style.height = (originalElement.getBoundingClientRect().height) + 'px';
+        
+        return preview;
     }
 
     onMouseMove(e) {
@@ -57,11 +71,9 @@ class DragDropManager {
     }
 
     updatePreviewPosition(e) {
-        const scrollX = window.scrollX || window.pageXOffset;
-        const scrollY = window.scrollY || window.pageYOffset;
-        
-        this.previewElement.style.left = (e.clientX - this.offsetX + scrollX) + 'px';
-        this.previewElement.style.top = (e.clientY - this.offsetY + scrollY) + 'px';
+        const previewWidth = this.previewElement.offsetWidth;
+        this.previewElement.style.left = (e.clientX - previewWidth / 2) + 'px';
+        this.previewElement.style.top = (e.clientY - this.offsetY) + 'px';
     }
 
     updateMarkerAndDropZones(mouseX, mouseY) {
@@ -87,12 +99,11 @@ class DragDropManager {
 
         if (blocks.length === 0) {
             const workspaceRect = this.workspace.getBoundingClientRect();
-            const scrollY = window.scrollY || window.pageYOffset;
             
             this.markerElement.style.display = 'block';
             this.markerElement.style.width = (workspaceRect.width - 70) + 'px';
             this.markerElement.style.left = (workspaceRect.left + 35) + 'px';
-            this.markerElement.style.top = (workspaceRect.top + scrollY + 10) + 'px';
+            this.markerElement.style.top = (workspaceRect.top + 10) + 'px';
             return;
         }
         
@@ -101,13 +112,12 @@ class DragDropManager {
             const block = blocks[i];
             const rect = block.getBoundingClientRect();
             const blockMiddle = rect.top + rect.height / 2;
-            const scrollY = window.scrollY || window.pageYOffset;
             
             if (mouseY < blockMiddle) {
                 this.markerElement.style.display = 'block';
                 this.markerElement.style.width = (rect.width - 40) + 'px';
                 this.markerElement.style.left = (rect.left + 20) + 'px';
-                this.markerElement.style.top = (rect.top + scrollY - 5) + 'px';
+                this.markerElement.style.top = (rect.top - 5) + 'px';
                 return;
             }
             
@@ -115,7 +125,7 @@ class DragDropManager {
                 this.markerElement.style.display = 'block';
                 this.markerElement.style.width = (rect.width - 40) + 'px';
                 this.markerElement.style.left = (rect.left + 20) + 'px';
-                this.markerElement.style.top = (rect.bottom + scrollY + 5) + 'px';
+                this.markerElement.style.top = (rect.bottom + 5) + 'px';
                 return;
             }
         }
@@ -253,7 +263,10 @@ class DragDropManager {
                    blockText.includes("Элемент массива =") || 
                    blockText.includes("Получить элемент")) {
             iconSpan.textContent = 'Массив';
-        } else {
+        } else if (blockText.includes("Вывести в консоль")){
+            iconSpan.textContent = 'Вывести';
+        }
+        else{
             iconSpan.textContent = '';
         }
         
@@ -401,6 +414,31 @@ class DragDropManager {
             const container = document.createElement('div');
             container.className = 'block-children';
             element.appendChild(container);
+        }
+        else if (blockText.includes("Если-иначе")) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'else-if-condition';
+            input.className = 'block-input';
+            element.appendChild(input);
+
+            const span = document.createElement('span');
+            span.textContent = 'то';
+            span.className = 'operator';
+            element.appendChild(span);
+
+            const container = document.createElement('div');
+            container.className = 'block-children';
+            element.appendChild(container);
+
+            const elseSpan = document.createElement('span');
+            elseSpan.textContent = 'иначе';
+            elseSpan.className = 'operator';
+            element.appendChild(elseSpan);
+
+            const elseContainer = document.createElement('div');
+            elseContainer.className = 'block-children';
+            element.appendChild(elseContainer);
         }
     }
     
