@@ -172,13 +172,13 @@ class Interpreter{
                 i+=1;
             }else if(blockElement.querySelector(':scope > input[name="if-condition"]')){
 
-                const conditionText = blockElement.querySelector('input[name="if-condition"]').value;
+                const conditionText = blockElement.querySelector(':scope > input[name="if-condition"]').value;
                 const childrenContainer = blockElement.querySelector(':scope > .block-children');
                 const bodyBlocks = [];
 
                 if(childrenContainer){
 
-                    const indoorBlocks = childrenContainer.querySelectorAll('.workspace-block-container');
+                    const indoorBlocks = childrenContainer.querySelectorAll(':scope > .workspace-block-container');
                     indoorBlocks.forEach(indoorBlock => bodyBlocks.push(indoorBlock));
                 }
 
@@ -222,15 +222,15 @@ class Interpreter{
                         i+=1;
                      }
             else if(blockElement.querySelector(':scope > input[name="for-init"]')){
-                const initText = blockElement.querySelector('input[name="for-init"]').value;
-                const conditionText = blockElement.querySelector('input[name="for-condition"]').value;
-                const stepText = blockElement.querySelector('input[name="for-step"]').value;
+                const initText = blockElement.querySelector(':scope > input[name="for-init"]').value;
+                const conditionText = blockElement.querySelector(':scope > input[name="for-condition"]').value;
+                const stepText = blockElement.querySelector(':scope > input[name="for-step"]').value;
 
-                const childrenContainer = blockElement.querySelector('.block-children');
+                const childrenContainer = blockElement.querySelector(':scope > .block-children');
                 const bodyBlocks = [];
 
                 if(childrenContainer){
-                    const indoorBlocks = childrenContainer.querySelectorAll('.workspace-block-container');
+                    const indoorBlocks = childrenContainer.querySelectorAll(':scope > .workspace-block-container');
                     indoorBlocks.forEach(block => bodyBlocks.push(block));
                 }
 
@@ -321,7 +321,6 @@ class Interpreter{
         const outPut = [];
         const stack = [];
         const importance = {
-            "[" : 6, "]": 6,
             "**" : 5,
             "*" : 4, "/" : 4, 
             "+" : 3, "-" : 3, 
@@ -363,6 +362,8 @@ class Interpreter{
             else{
                 
                 while(stack.length>0 && stack[stack.length-1].type === "operator" &&
+                    stack[stack.length-1].value !== "(" &&
+                    stack[stack.length-1].value !== "[" &&
                     importance[stack[stack.length-1].value] >= importance[token.value]){
 
                         outPut.push(stack.pop());
@@ -503,29 +504,6 @@ class DeclarationNode extends ASTNode{
 
     get name(){
         return this.#name;
-    }
-}
-
-class AssignmentExpressionNode extends ExpressionNode {
-    #name;
-    #value;
-
-    constructor(name, value) {
-        super();
-        this.#name = name;
-        this.#value = value;
-    }
-
-    evaluate(interpreter) {
-        
-        if (!interpreter.hasVariable(this.#name)) {
-            interpreter.print(`Ошибка: переменная "${this.#name}" не объявлена`);
-            return null;
-        }
-        
-        const value = this.#value.evaluate(interpreter);
-        interpreter.setVariable(this.#name, value);
-        return value;
     }
 }
 
@@ -838,7 +816,7 @@ class ForNode extends ASTNode {
     }
 
     execute(interpreter) {
-        // Инициализация (выполняется один раз)
+
         if (this.#init) {
             if (this.#init instanceof ASTNode) {
                 this.#init.execute(interpreter);
@@ -847,16 +825,13 @@ class ForNode extends ASTNode {
             }
         }
 
-        // Цикл
         while (true) {
-            // Проверка условия
+
             const conditionValue = this.#condition.evaluate(interpreter);
             if (!conditionValue) break;
             
-            // Тело цикла
             this.#body.execute(interpreter);
             
-            // Шаг
             if (this.#step) {
                 if (this.#step instanceof ASTNode) {
                     this.#step.execute(interpreter);

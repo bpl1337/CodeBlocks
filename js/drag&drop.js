@@ -36,12 +36,11 @@ class DragDropManager {
 
         this.isDragging = true;
         
-        // Превью
+
         this.previewElement = this.draggedElement.cloneNode(true);
         this.previewElement.classList.add('drag-preview');
         document.body.appendChild(this.previewElement);
         
-        // Маркер
         this.markerElement = document.createElement('div');
         this.markerElement.classList.add('insert-marker');
         document.body.appendChild(this.markerElement);
@@ -75,7 +74,7 @@ class DragDropManager {
         const blocks = Array.from(this.workspace.querySelectorAll('.workspace-block-container'));
         const dropZones = document.querySelectorAll('.block-children');
         
-        // Проверяем зоны вложения
+        
         for (const zone of dropZones) {
             const rect = zone.getBoundingClientRect();
             if (mouseY >= rect.top && mouseY <= rect.bottom && mouseX >= rect.left && mouseX <= rect.right) {
@@ -85,7 +84,7 @@ class DragDropManager {
             }
         }
         
-        // Если блоков нет - маркер в начале
+
         if (blocks.length === 0) {
             const workspaceRect = this.workspace.getBoundingClientRect();
             const scrollY = window.scrollY || window.pageYOffset;
@@ -97,7 +96,7 @@ class DragDropManager {
             return;
         }
         
-        // Ищем позицию для маркера между блоками
+
         for (let i = 0; i < blocks.length; i++) {
             const block = blocks[i];
             const rect = block.getBoundingClientRect();
@@ -161,21 +160,21 @@ class DragDropManager {
 
         const elementUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
         
-        // Проверяем, не попадаем ли мы в блок-children
+
         const dropZoneInChildren = elementUnderCursor?.closest('.block-children');
 
         if (dropZoneInChildren) {
-            // Вставляем внутрь if/for
+
             this.createElementInDropZone(this.draggedElement, dropZoneInChildren);
         } 
         else if (this.workspace && this.workspace.contains(elementUnderCursor)) {
-            // Вставляем в рабочую область
+
             const blocks = Array.from(this.workspace.querySelectorAll('.workspace-block-container'));
             
-            // Находим позицию для вставки
+
             let insertPosition = blocks.length;
             
-            // Проверяем, над каким блоком курсор
+
             for (let i = 0; i < blocks.length; i++) {
                 const block = blocks[i];
                 const rect = block.getBoundingClientRect();
@@ -210,22 +209,19 @@ class DragDropManager {
         container.appendChild(newElement);
         container.appendChild(deleteBtn);
         
-        // Убираем title-L если есть
         const titleL = this.workspace.querySelector('.title-L');
         if (titleL) titleL.style.display = 'none';
         
-        // Получаем все существующие блоки
         const existingBlocks = this.workspace.querySelectorAll('.workspace-block-container');
         
-        // Вставляем в правильную позицию
         if (existingBlocks.length === 0) {
-            // Если блоков нет - просто добавляем
+
             this.workspace.appendChild(container);
         } else if (insertPosition >= existingBlocks.length) {
-            // Если позиция после последнего - добавляем в конец
+
             this.workspace.appendChild(container);
         } else {
-            // Вставляем перед блоком с индексом insertPosition
+
             this.workspace.insertBefore(container, existingBlocks[insertPosition]);
         }
         
@@ -233,7 +229,7 @@ class DragDropManager {
             e.stopPropagation();
             container.remove();
             
-            // Если блоков не осталось - показываем title-L
+
             if (this.workspace.querySelectorAll('.workspace-block-container').length === 0) {
                 const titleL = this.workspace.querySelector('.title-L');
                 if (titleL) titleL.style.display = 'flex';

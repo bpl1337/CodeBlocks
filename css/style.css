@@ -489,6 +489,8 @@ a {
     background: #0A0A1A;
     border: 1px solid rgba(0, 255, 157, 0.15);
     border-radius: 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .footer {
@@ -985,7 +987,7 @@ a {
 
 .variables-header {
     color: #019745;
-    font-family: 'Orbitron', 'Courier New', monospace;
+    font-family: 'Inter';
     font-size: 20px;
     font-weight: bolder;
     padding: 10px;
@@ -993,14 +995,15 @@ a {
 
 .variables-empty {
     color: #019745;
-    font-family: 'Orbitron', 'Courier New', monospace;
+    font-family: 'Inter';
     font-size: 18px;
     padding: 10px;
 }
 
 .variable-row {
     color: #019745;
-    font-family: 'Orbitron', 'Courier New', monospace;
+    font-family: 'Inter';
     font-size: 18px;
     padding: 5px 10px;
+    overflow-wrap: anywhere;
 }
