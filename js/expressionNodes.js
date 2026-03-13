@@ -1,3 +1,9 @@
+
+
+class ExpressionNode{
+    evaluate(){}
+}
+
 class ForInitNode extends ExpressionNode {
     #name;
     #value;

@@ -1,10 +1,10 @@
+
+
 class ASTNode{
     execute(){}
 }
 
-class ExpressionNode{
-    evaluate(){}
-}
+
 
 class ProgramNode extends ASTNode{
     #statements;

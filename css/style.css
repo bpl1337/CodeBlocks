@@ -157,8 +157,8 @@ a {
     font-weight: 700;
     font-size: 30px;
 
-    top: 35px;
-    left: 45px;
+    top: 70px;
+    left: 230px;
     
     color: #4CC9F0;
 }
@@ -181,7 +181,7 @@ a {
     text-align: center;
     color: #FFFFFF;
 
-    left: 1100px;
+    left: 1300px;
     top: 30px;
 }
 
@@ -203,7 +203,7 @@ a {
     text-align: center;
     color: #FFFFFF;
 
-    left: 1158px;
+    left: 1340px;
     top: 30px;
 }
 
@@ -560,27 +560,14 @@ a {
     width: 100% !important;
 }
 
-.workspace-block-container {
-    transition: all 0.2s;
-}
-
 .workspace-block-container:hover {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.drag-preview {
-    position: absolute;
-    opacity: 0.7;
-    pointer-events: none;
-    z-index: 1000;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(66, 225, 253, 0.829);
 }
 
 .insert-marker {
-    height: 4px;
-    background-color: #4caf50;
-    position: absolute;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #4caf50, transparent);
+    position: fixed;
     z-index: 999;
     pointer-events: none;
     display: none;
@@ -605,6 +592,11 @@ a {
     cursor: pointer;
     z-index: 10;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.delete-btn:hover{
+    width: 26px;
+    height: 26px;
 }
 
 .block-children.drag-over {
@@ -650,10 +642,6 @@ a {
     margin: 0 auto 10px auto;
     box-sizing: border-box;
     transition: all 0.2s;
-}
-
-.workspace-block-container:hover {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .workspace-block-container .variables,
@@ -795,27 +783,6 @@ a {
     transition: all 0.2s;
 }
 
-.drag-preview {
-    position: absolute;
-    opacity: 0.7;
-    pointer-events: none;
-    z-index: 1000;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-    border-radius: 8px;
-}
-
-.insert-marker {
-    height: 4px;
-    background-color: #4caf50;
-    position: absolute;
-    z-index: 999;
-    pointer-events: none;
-    display: none;
-    box-shadow: 0 0 8px #4caf50;
-    border-radius: 2px;
-}
-
-
 .workspace-block-container {
     position: relative;
     width: calc(100% - 70px);
@@ -939,18 +906,28 @@ a {
 }
 
 .drag-preview {
-    position: absolute;
-    opacity: 0.7;
+    position: fixed;
+    opacity: 0.82;
     pointer-events: none;
-    z-index: 1000;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    z-index: 1100;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 0 16px rgba(255, 255, 255, 0.1);
     border-radius: 8px;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 50px;
+    backdrop-filter: blur(3px);
+    transform: scale(0.96);
+    transition: transform 0.1s ease-out;
 }
 
 .insert-marker {
-    height: 4px;
-    background-color: #4caf50;
-    position: absolute;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #4caf50, transparent);
+    position: fixed;
     z-index: 999;
     pointer-events: none;
     display: none;
