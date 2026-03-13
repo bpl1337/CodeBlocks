@@ -191,6 +191,10 @@ class Interpreter{
 
                 statements.push(new PrintNode(expressionNode));
                 i+=1;
+            }else if(blockElement.querySelector(':scope > input[name="print-text"]')){
+                const textValue = blockElement.querySelector(':scope > input[name="print-text"]').value;
+                statements.push(new PrintTextNode(textValue));
+                i+=1;
             }else if(blockElement.querySelector(':scope > input[name="if-condition"]')){
                 const conditionText = blockElement.querySelector(':scope > input[name="if-condition"]').value;
                 const childrenContainer = blockElement.querySelector(':scope > .block-children');
@@ -365,6 +369,19 @@ class Interpreter{
                 continue;                          
             }
 
+            if(currentSymbol === '"'){
+                const openingQuote = currentSymbol;
+                i+=1;
+                let string = "";
+                while(i<expression.length && expression[i] !== openingQuote){
+                    string += expression[i];
+                    i+=1;
+                }
+                i+=1;
+                tokens.push({type: "string", value: string});
+                continue;
+            }
+
             if(i+1<expression.length){
                 const doubledOperator = expression.substr(i, 2);
                 if(['>=', '<=', '==', '!=', '**', '&&', '||', '+=', '-=', '//'].includes(doubledOperator)){
@@ -400,7 +417,7 @@ class Interpreter{
         };
 
         for(const token of tokens){
-            if(token.type === "number" || token.type === "variable"){
+            if(token.type === "number" || token.type === "variable" || token.type === "string"){
                 outPut.push(token);
             }
             else if(token.value === "(" || token.value === "["){
@@ -443,6 +460,9 @@ class Interpreter{
             if (token.type === 'number') {
                 stack.push(new NumberNode(token.value));
             }
+            else if (token.type === 'string') {
+                stack.push(new StringNode(token.value));
+            }
             else if (token.type === 'variable') {
                 stack.push(new VariableNode(token.value));
             }
@@ -463,7 +483,7 @@ class Interpreter{
 
     #buildExpressionNode(text) {
         if (!text.trim()){
-            return new NumberNode(0);
+            return new EmptyNode();
         }
 
         if (text.includes('=')) {
@@ -479,7 +499,7 @@ class Interpreter{
                     
                     if (!this.#isValidVariableName(name)) {
                         this.#print(`Ошибка: некорректное имя переменной "${name}"`);
-                        return new NumberNode(0);
+                        return new EmptyNode();
                     }
                     
                     const valueNode = this.#buildExpressionNode(valueText);
@@ -491,8 +511,9 @@ class Interpreter{
         const tokens = this.#tokenize(text);
 
         if (tokens.length === 0){
-            return new NumberNode(0);
+            return new EmptyNode();
         }
+
         
         const rpn = this.#buildRPN(tokens);
         return this.#buildExpressionTree(rpn);

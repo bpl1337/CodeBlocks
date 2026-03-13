@@ -38,6 +38,25 @@ class NumberNode extends ExpressionNode{
     }
 }
 
+class StringNode extends ExpressionNode{
+    #value;
+
+    constructor(value){
+        super();
+        this.#value = value;
+    }
+
+    evaluate(interpreter){
+        return this.#value;
+    }
+}
+
+class EmptyNode extends ExpressionNode{
+    evaluate(interpreter){
+        return "";
+    }
+}
+
 class VariableNode extends ExpressionNode{
     #name;
 
