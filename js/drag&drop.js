@@ -77,13 +77,12 @@ class DragDropManager {
     updateMarkerAndDropZones(mouseX, mouseY) {
         if (!this.workspace || !this.markerElement) return;
         
-        document.querySelectorAll('.block-children').forEach(zone => {
+        const dropZones = document.querySelectorAll('.block-children');
+        dropZones.forEach(zone => {
             zone.classList.remove('drag-over');
         });
         
         const blocks = Array.from(this.workspace.querySelectorAll('.workspace-block-container'));
-        const dropZones = document.querySelectorAll('.block-children');
-        
         
         for (const zone of dropZones) {
             const rect = zone.getBoundingClientRect();
@@ -94,7 +93,6 @@ class DragDropManager {
             }
         }
         
-
         if (blocks.length === 0) {
             const workspaceRect = this.workspace.getBoundingClientRect();
             
@@ -105,7 +103,6 @@ class DragDropManager {
             return;
         }
         
-
         for (let i = 0; i < blocks.length; i++) {
             const block = blocks[i];
             const rect = block.getBoundingClientRect();
@@ -131,7 +128,7 @@ class DragDropManager {
         this.markerElement.style.display = 'none';
     }
 
-    createElementInDropZone(originalElement, dropZone) {
+    buildBlockUI(originalElement) {
         const container = document.createElement('div');
         container.className = 'workspace-block-container';
         
@@ -148,12 +145,38 @@ class DragDropManager {
 
         container.appendChild(newElement);
         container.appendChild(deleteBtn);
-        dropZone.appendChild(container);
 
         deleteBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             container.remove();
+            
+            if (this.workspace.querySelectorAll('.workspace-block-container').length === 0) {
+                const titleL = this.workspace.querySelector('.title-L');
+                if (titleL) titleL.style.display = 'flex';
+            }
         });
+
+        return container;
+    }
+
+    createElementInDropZone(originalElement, dropZone) {
+        const container = this.buildBlockUI(originalElement);
+        dropZone.appendChild(container);
+    }
+
+    createElementInWorkspace(originalElement, insertPosition) {
+        const container = this.buildBlockUI(originalElement);
+        
+        const titleL = this.workspace.querySelector('.title-L');
+        if (titleL) titleL.style.display = 'none';
+        
+        const existingBlocks = this.workspace.querySelectorAll('.workspace-block-container');
+        
+        if (existingBlocks.length === 0 || insertPosition >= existingBlocks.length) {
+            this.workspace.appendChild(container);
+        } else {
+            this.workspace.insertBefore(container, existingBlocks[insertPosition]);
+        }
     }
 
     onMouseUp(e) {
@@ -167,22 +190,15 @@ class DragDropManager {
         }
 
         const elementUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
-        
-
         const dropZoneInChildren = elementUnderCursor?.closest('.block-children');
 
         if (dropZoneInChildren) {
-
             this.createElementInDropZone(this.draggedElement, dropZoneInChildren);
         } 
         else if (this.workspace && this.workspace.contains(elementUnderCursor)) {
-
             const blocks = Array.from(this.workspace.querySelectorAll('.workspace-block-container'));
-            
-
             let insertPosition = blocks.length;
             
-
             for (let i = 0; i < blocks.length; i++) {
                 const block = blocks[i];
                 const rect = block.getBoundingClientRect();
@@ -199,72 +215,21 @@ class DragDropManager {
         this.cleanup();
     }
 
-    createElementInWorkspace(originalElement, insertPosition) {
-        const container = document.createElement('div');
-        container.className = 'workspace-block-container';
-        
-        const newElement = originalElement.cloneNode(false);
-        newElement.className = originalElement.className;
-        newElement.removeAttribute('draggable');
-        
-        this.addTextToBlock(newElement, originalElement.textContent);
-        this.addInputFields(newElement, originalElement.textContent);
-        
-        const deleteBtn = document.createElement('span');
-        deleteBtn.className = 'delete-btn';
-        deleteBtn.innerHTML = '×';
-        
-        container.appendChild(newElement);
-        container.appendChild(deleteBtn);
-        
-        const titleL = this.workspace.querySelector('.title-L');
-        if (titleL) titleL.style.display = 'none';
-        
-        const existingBlocks = this.workspace.querySelectorAll('.workspace-block-container');
-        
-        if (existingBlocks.length === 0) {
-
-            this.workspace.appendChild(container);
-        } else if (insertPosition >= existingBlocks.length) {
-
-            this.workspace.appendChild(container);
-        } else {
-
-            this.workspace.insertBefore(container, existingBlocks[insertPosition]);
-        }
-        
-        deleteBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            container.remove();
-            
-
-            if (this.workspace.querySelectorAll('.workspace-block-container').length === 0) {
-                const titleL = this.workspace.querySelector('.title-L');
-                if (titleL) titleL.style.display = 'flex';
-            }
-        });
-    }
-
     addTextToBlock(element, blockText) {
         const iconSpan = document.createElement('span');
         iconSpan.className = 'block-icon';
         
-        if (blockText.includes("Объявить переменную")) {
-            iconSpan.textContent = 'Переменная';
-        } else if (blockText.includes("Присвоить значение")) {
+        if (blockText.includes("Объявить переменную") || blockText.includes("Присвоить значение")) {
             iconSpan.textContent = 'Переменная';
         } else if (blockText.includes("Если")) {
             iconSpan.textContent = 'Если';
         } else if (blockText.includes("Цикл For")) {
             iconSpan.textContent = 'for';
-        } else if (blockText.includes("Объявить массив") || 
-                   blockText.includes("Элемент массива =") || 
-                   blockText.includes("Получить элемент")) {
+        } else if (blockText.includes("Объявить массив") || blockText.includes("Элемент массива =") || blockText.includes("Получить элемент")) {
             iconSpan.textContent = 'Массив';
         } else if (blockText.includes("Вывести в консоль")){
             iconSpan.textContent = 'Вывести';
-        }
-        else{
+        } else {
             iconSpan.textContent = '';
         }
         
